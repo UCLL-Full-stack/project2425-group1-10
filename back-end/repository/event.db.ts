@@ -145,6 +145,7 @@ const events = [
         location: 'Paris',
         category: 'Culinary Festival',
         backgroundImage: '/images/food-festival.jpg',
+        participants: [],
     }),
     new Event({
         id: 4,
@@ -164,6 +165,7 @@ const events = [
         location: 'London',
         category: 'Art Exhibition',
         backgroundImage: '/images/art-exhibition.jpg',
+        participants: [],
     }),
     new Event({
         id: 6,
@@ -173,6 +175,7 @@ const events = [
         location: 'Barcelona',
         category: 'Mindfulness',
         backgroundImage: '/images/yoga-workshop.jpg',
+        participants: [],
     }),
     new Event({
         id: 7,
@@ -182,6 +185,7 @@ const events = [
         location: 'Dublin',
         category: 'Entrepreneurship',
         backgroundImage: '/images/startup-pitch-competition.jpg',
+        participants: [],
     }),
 
     new Event({
@@ -192,6 +196,7 @@ const events = [
         location: 'San Francisco',
         category: 'Tech Conference',
         backgroundImage: '/images/tech-conference.jpg',
+        participants: [],
     }),
     new Event({
         id: 9,
@@ -201,6 +206,7 @@ const events = [
         location: 'Rome',
         category: 'Sommelier Events',
         backgroundImage: '/images/wine-tasting-evening.jpg',
+        participants: [],
     }),
 ];
 
@@ -217,9 +223,17 @@ const getEventById = ({ id }: { id: number }): Event | null => {
     }
 };
 
+const addParticipantToEvent = (participant: Participant, eventId: number): void => {
+    events.forEach(event => {
+        if (event.getId() === eventId) {
+            event.addParticipant(participant);
+        };
+    });
+};
 
 export default {
     createEvent,
     getAllEvents,
     getEventById,
+    addParticipantToEvent,
 };

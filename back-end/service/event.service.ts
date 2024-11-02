@@ -1,6 +1,7 @@
 import { Event } from "../model/event";
 import eventDb from "../repository/event.db";
 import { EventInput } from "../types";
+import participantService from "./participant.service";
 //added 31/10
 const createEvent = (eventInput: EventInput): Event => {
     if (!eventInput.name) throw new Error('Event name is required');
@@ -24,9 +25,6 @@ const createEvent = (eventInput: EventInput): Event => {
     return eventDb.createEvent(event);
 };
 
-
-
-
 //Function to get all the events
 const getAllEvents = (): Event[] => {
     return eventDb.getAllEvents();
@@ -35,11 +33,20 @@ const getAllEvents = (): Event[] => {
 //To get the events by their id:
 const getEventById = (id: number): Event => {
     const event = eventDb.getEventById({ id });
-
     if (!event){
         throw new Error(`Event with id ${id} does not exist.`)
     }
-    return event; // if found return the event.
-}
+    return event;
+};
 
-export default { createEvent, getAllEvents, getEventById}
+const addParticipantToEvent = (email: string, eventId: number): void => {
+    const participant = participantService.getParticipantByEmail(email);
+    eventDb.addParticipantToEvent(participant, eventId);
+};
+
+export default {
+    createEvent,
+    getAllEvents,
+    getEventById,
+    addParticipantToEvent,
+};

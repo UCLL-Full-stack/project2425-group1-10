@@ -165,6 +165,36 @@
     background-color: #ddd;
   }
 
+  .addParticipantForm {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.addParticipantForm label {
+    font-weight: bold;
+}
+
+.addParticipantForm input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.addParticipantForm button {
+    padding: 10px;
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.addParticipantForm button:hover {
+    background-color: #005bb5;
+}
+
 .description {
     display: flex;
     flex-direction: column;

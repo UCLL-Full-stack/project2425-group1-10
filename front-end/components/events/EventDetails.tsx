@@ -21,7 +21,7 @@ const EventDetails: React.FC<Props> = ({event}: Props) => {
             <p>Date: {new Date(event.date).toLocaleDateString()}</p>
             <p>Location: {event.location}</p>
             <p>Category: {event.category}</p>
-            {event.participants.length > 0 && (
+            {event.participants && event.participants.length > 0 && (
                 <div className={styles.participants}>
                     <h2>Participants</h2>
                     <table className={styles.participantsTable}>

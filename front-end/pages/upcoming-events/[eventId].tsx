@@ -10,6 +10,13 @@ import styles from '@styles/home.module.css';
 const RenderEventDetailsById: React.FC = () => {
 
     const [event, setEvent] = useState<EventInput>();
+    const [showForm, setShowForm] = useState(false);
+    const [showAddButton, setShowAddButton] = useState(true);
+    const [email, setEmail] = useState("");
+
+    // Show error message
+    // const [showError, setShowError] = useState(false);
+    // const [errorMessage, setErrorMessage] = useState("");
 
     const router = useRouter();
     const { eventId } = router.query;
@@ -25,10 +32,22 @@ const RenderEventDetailsById: React.FC = () => {
     };
 
     useEffect(() => {
-        if (eventId && !event) {
             getEventById();
-        }
     }, [eventId, event]);
+
+    const handleAddParticipant = () => {
+        setShowForm(true);
+        setShowAddButton(false);
+    };
+
+    const handleFormSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        EventService.addParticipantToEvent(email, eventId as string);
+        getEventById();
+        setEmail("");
+        setShowForm(false);
+        setShowAddButton(true);
+    };
 
     return (
         <>
@@ -47,6 +66,28 @@ const RenderEventDetailsById: React.FC = () => {
                     </section>
                 ) : (
                     <p>Loading event details...</p>
+                )}
+
+                {/* {showError && (
+                    <p className={styles.errorMessage}>{errorMessage}</p>
+                )} */}
+
+                {showAddButton && (
+                    <button onClick={handleAddParticipant}>Add participant</button>
+                )}
+
+                {showForm && (
+                    <form onSubmit={handleFormSubmit} className={styles.addParticipantForm}>
+                        <label htmlFor="email">Email:</label>
+                        <input
+                            type="email"
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    <button type="submit">Submit</button>
+                </form>
                 )}
             </main>
         </>

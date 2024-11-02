@@ -105,4 +105,15 @@ eventRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) 
     }
 });
 
+eventRouter.put('/:id/:email', async (req: Request, res: Response, next: NextFunction) => {
+    const eventId = parseInt(req.params.id, 10);
+    const email = req.params.email;
+
+    try {
+        eventService.addParticipantToEvent(email, eventId);
+    } catch (error) {
+        res.status(400).json({ status: 'error', message: 'Could not add participant to event.' });
+    }
+});
+
 export { eventRouter };
