@@ -1,4 +1,3 @@
-
 import { Participant } from "../model/participant";
 import { User } from "../model/user";
 
