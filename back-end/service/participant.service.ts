@@ -6,13 +6,13 @@ import { User } from "../model/user";
 const getAllParticipants = (): Participant[] => participantDb.getAllParticipants();
 
 const updateParticipant = (id: number, participantInput: ParticipantInput): Participant => {
-    const participant = participantDb.getAllParticipants().find(p => p.getId() === id);
+    const participant = participantDb.getAllParticipants().find(participant => participant.getId() === id);
 
     if (!participant) {
-        throw new Error('Participant not found');
+        throw new Error('There needs to be at least one participant.');
     }
 
-    // New user with updated details: 
+    // New user with updated details:
     const updatedUser = new User({
         id: participant.getUser().getId(),
         username: participantInput.user.username,
@@ -23,7 +23,7 @@ const updateParticipant = (id: number, participantInput: ParticipantInput): Part
         role: participantInput.user.role,
     });
 
-    // Now we are creating the P instance with the info of the new user: 
+    // Now we are creating the P instance with the info of the new user:
     const updatedParticipant = new Participant({
         id: participant.getId(),
         user: updatedUser,
