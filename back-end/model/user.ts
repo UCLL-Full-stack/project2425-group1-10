@@ -23,6 +23,29 @@ export class User {
         age: number,
         role: Role,
     }) {
+        if (!user.username) {
+            throw new Error('Username can not be empty');
+        }
+        if (!user.name) {
+            throw new Error('Name can not be empty.');
+        }
+        if (!user.password) {
+            throw new Error('Password can not be empty.');
+        }
+        if (user.age <= 0 || !Number.isInteger(user.age)) {
+            throw new Error('Age must be a positive integer.');
+        }
+
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        if (!user.email || !emailRegex.test(user.email)) {
+            throw new Error('Invalid email format.');
+        }
+        
+        const validRoles: Role[] = ['participant', 'organizer'];
+        if (!user.role || !validRoles.includes(user.role)) {
+            throw new Error('Invalid role. Role must be either "participant" or "organizer".');
+        }
+
         this.id = user.id;
         this.username = user.username;
         this.name = user.name;
@@ -79,7 +102,7 @@ export class User {
         password,
         age,
         role,
-    }: UserPrisma & {role: RolePrisma}) {
+    }: UserPrisma & { role: RolePrisma }) {
         return new User({
             id,
             username,

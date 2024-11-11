@@ -17,16 +17,16 @@ const getEventById = async (id: number): Promise<Event> => {
 };
 
 const addParticipantToEvent = async (email: string, eventId: number): Promise<Event> => {
-        return await eventDb.addParticipantToEvent(email, eventId);
+    return await eventDb.addParticipantToEvent(email, eventId);
 };
 
 const getEventsByUserEmail = async (email: string): Promise<Event[]> => {
-        return await eventDb.getEventsByUserEmail(email);
+    return await eventDb.getEventsByUserEmail(email);
 };
 
-export default { 
-    // createEvent, 
-    getAllEvents, 
+export default {
+    // createEvent,
+    getAllEvents,
     getEventById,
     addParticipantToEvent,
     // getEventsByParticipantEmail,
