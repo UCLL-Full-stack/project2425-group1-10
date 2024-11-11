@@ -1,4 +1,5 @@
 import { Event } from '../../model/event';
+import { User } from '../../model/user';
 
 // Sample data for the event
 const name = 'Taylor Swift concert';
@@ -6,23 +7,26 @@ const description = 'Amazing music, sung by a talented artist.';
 const date = new Date('2024-12-12');
 const location = 'Amsterdam';
 const category = 'Big-Event';
-
+const users: User[] = []; //imported user
+const isTrending = false;
 
 
 //Tests
 test('Given: valid values for event, when: event is created, then: event is created with those values', () => {
+
     // Given
-    const event = new Event({ name, description, date, location, category });
+    const event = new Event({ name, description, date, location, category, users, isTrending });
 
     // When
-    const createdEvent = event;
-
+    // const createdEvent = event;
+    console.log("Event created:", event);
     // Then
-    expect(createdEvent.getName()).toEqual(name);
-    expect(createdEvent.getDescription()).toEqual(description);
-    expect(createdEvent.getDate()).toEqual(date);
-    expect(createdEvent.getLocation()).toEqual(location);
-    expect(createdEvent.getCategory()).toEqual(category);
+    expect(event.getName()).toEqual(name);
+    expect(event.getDescription()).toEqual(description);
+    expect(event.getDate()).toEqual(date);
+    expect(event.getLocation()).toEqual(location);
+    expect(event.getCategory()).toEqual(category);
+    console.log("All assertions passed for valid event creation test");
 });
 
 test('given: invalid date, when: event is created, then: an error is thrown', () => {
@@ -31,7 +35,7 @@ test('given: invalid date, when: event is created, then: an error is thrown', ()
 
     // when
     const newEvent = () => {
-        new Event({ name, description, date: invalidEndDate, location, category })
+        new Event({ name, description, date: invalidEndDate, location, category, users, isTrending })
     };
 
 
@@ -43,15 +47,15 @@ test('given: invalid date, when: event is created, then: an error is thrown', ()
 test('Given: event with an id, when: getId is called, then: returns the event with the correct id.,', () => {
     //given:
     const id = 1;
-    const event = new Event({ id, name, description, date, location, category });
+    const event = new Event({ id, name, description, date, location, category, users, isTrending });
 
     //Then:
     expect(event.getId()).toEqual(id);
 });
 
-test('Given: event with no id, when: wanting to call event with getId, then: error is thrown.', ()=>{
+test('Given: event with no id, when: wanting to call event with getId, then: error is thrown.', () => {
     // Given
-    const event = new Event({ name, description, date, location, category });
+    const event = new Event({ name, description, date, location, category, users, isTrending });
 
     // When
     const getId = () => event.getId();
@@ -63,23 +67,23 @@ test('Given: event with no id, when: wanting to call event with getId, then: err
 test('Given: event with empty name, When: event is created, Then: an error is thrown', () => {
     // Given
     const emptyName = '';
-    
+
     // When
-    const createEvent = () => {
-        new Event({ name: emptyName, description, date, location, category });
+    const createEventWithEmptyName = () => {
+        new Event({ name: emptyName, description, date, location, category, users, isTrending });
     };
 
     // Then
-    expect(createEvent).toThrow('Name cannot be empty');
+    expect(createEventWithEmptyName).toThrow('Name cannot be empty');
 });
 
 test('Given: event with empty description, When: event is created, Then: an error is thrown', () => {
     // Given
     const emptyDescription = '';
-    
+
     // When
     const createEvent = () => {
-        new Event({ name, description: emptyDescription, date, location, category });
+        new Event({ name, description: emptyDescription, date, location, category, users, isTrending });
     };
 
     // Then
@@ -89,10 +93,10 @@ test('Given: event with empty description, When: event is created, Then: an erro
 test('Given: event with empty location, When: event is created, Then: an error is thrown', () => {
     // Given
     const emptyLocation = '';
-    
+
     // When
     const createEvent = () => {
-        new Event({ name, description, date, location: emptyLocation, category });
+        new Event({ name, description, date, location: emptyLocation, category, users, isTrending });
     };
 
     // Then
@@ -102,10 +106,10 @@ test('Given: event with empty location, When: event is created, Then: an error i
 test('Given: event with empty category, When: event is created, Then: an error is thrown', () => {
     // Given
     const emptyCategory = '';
-    
+
     // When
     const createEvent = () => {
-        new Event({ name, description, date, location, category: emptyCategory });
+        new Event({ name, description, date, location, category: emptyCategory, users, isTrending });
     };
 
     // Then
