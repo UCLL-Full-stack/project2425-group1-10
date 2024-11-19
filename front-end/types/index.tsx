@@ -21,3 +21,8 @@ export type EventInput = {
     users: UserInput[],
     isTrending: boolean,
 };
+
+export type UserLogin = {
+    email: string;
+    password: string;
+  };

@@ -29,6 +29,10 @@ const Header: React.FC = () => {
                 <Link href="/create-event" className={`nav-link px-4 fs-5 ${isActive('/create-event') ? 'text-white' : 'text-white-50'}`}>
                 Create event
                 </Link>
+
+                <Link href="/login" className={`nav-link px-4 fs-5 ${isActive('/login') ? 'text-white' : 'text-white-50'}`}>
+                Login
+                </Link>
             </nav>
         </header>
     );

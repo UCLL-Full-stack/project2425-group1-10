@@ -24,4 +24,13 @@ userRouter.get('/:email', async (req: Request, res: Response, next: NextFunction
     }
 });
 
+userRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = await userService.login(req.body);
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(400).json({ status: 'error' });
+    }
+};
+
 export { userRouter };

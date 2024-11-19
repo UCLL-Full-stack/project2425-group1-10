@@ -45,14 +45,14 @@ const MyEvents: React.FC = () => {
                 <form 
                     onSubmit={handleFormSubmit} 
                     className={styles.loginMyEvents}>
-                    <label htmlFor="email">Email:</label>
+                    <label htmlFor="email">Email</label>
                     <input
                         type="email"
                         id="email"
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
-                    <label htmlFor="password">Password:</label>
+                    <label htmlFor="password">Password</label>
                     <input
                         type="password"
                         id="password"

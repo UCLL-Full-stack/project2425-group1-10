@@ -13,6 +13,8 @@ const getUserByEmail = async (email: string): Promise<User | null> => {
     return userDb.getUserByEmail(email);
 };
 
+const login = async ({ email, password }: { email: string, password: string }): Promise<User | null> => {
+
 export default {
     getAllUsers,
     getUserById,
