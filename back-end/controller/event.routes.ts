@@ -41,6 +41,8 @@ const eventRouter = express.Router();
  * @swagger
  * /events:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get a list of all events.
  *     description: Returns JSON array of events, each item in the array is of type Event.
  *     tags:
@@ -70,6 +72,8 @@ eventRouter.get('/', async (req: Request, res: Response, next: NextFunction) => 
  * @swagger
  * /events/{id}:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get event by ID.
  *     description: Returns an event.
  *     tags:
@@ -109,6 +113,8 @@ eventRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) 
  * @swagger
  * /events/{id}/{email}:
  *   put:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Add a participant to an event.
  *     tags:
  *       - Events
@@ -148,7 +154,33 @@ eventRouter.put('/:id/:email', async (req: Request, res: Response, next: NextFun
 });
 
 
-
+/**
+ * @swagger
+ * /remove/{id}/{email}:
+ *   put:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Remove a participant from an event.
+ *     tags:
+ *       - Events
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *       - name: email
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: email
+ *     responses:
+ *       200:
+ *         description: Participant removed successfully.
+ *       400:
+ *         description: Error removing participant.
+ */
 eventRouter.put('/remove/:id/:email', async (req: Request, res: Response, next: NextFunction) => {
     const eventId = parseInt(req.params.id, 10);
     const email = req.params.email;
@@ -156,7 +188,7 @@ eventRouter.put('/remove/:id/:email', async (req: Request, res: Response, next: 
     try {
         await eventService.removeEvent(email, eventId);
         res.status(200).json({ message: 'Event removed successfully.' });
-    } catch (error){
+    } catch (error) {
         console.log(error);
     }
 
