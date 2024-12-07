@@ -8,6 +8,15 @@ export class Ticket {
         type: 'VIP' | 'Regular',
         cost: number;
     }) {
+        // Validate the type
+        if (ticket.type !== 'VIP' && ticket.type !== 'Regular') {
+            throw new Error('Invalid ticket type.');
+        }
+        if(ticket.cost < 0){
+            throw new Error('Cost must be a positive number.')
+        }
+
+
         this.id = ticket.id;
         this.type = ticket.type;
         this.cost = ticket.cost;
