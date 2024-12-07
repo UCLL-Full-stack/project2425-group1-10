@@ -8,6 +8,25 @@ export class Invite {
         status: 'pending' | 'confirmed' | 'declined',
         email: string;
     }) {
+        //status validation: needs to be one of the three
+        if (invite.status !== 'pending' && invite.status !== 'confirmed' && invite.status !== 'declined') {
+            throw new Error('Invalid status.');
+        }
+
+        //email can not be empty
+        if (!invite.email) {
+            throw new Error('Email can not be empty.'); // Retained for empty email check
+        }
+
+        //validation for the email: => simplify later.
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(invite.email)) {
+            throw new Error('Invalid email format'); // Updated error message
+        }
+
+
+
         this.id = invite.id;
         this.status = invite.status;
         this.email = invite.email;
@@ -22,7 +41,7 @@ export class Invite {
     }
 
     getEmail(): string {
-        return this.status
+        return this.email
     }
 
     equals(invite: Invite): boolean {
