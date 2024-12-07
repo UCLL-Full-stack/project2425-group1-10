@@ -45,6 +45,16 @@ export class Event {
         if (!event.category) {
             throw new Error('Category cannot be empty');
         }
+        //added validation so when users is 0 it gives error.
+        // if (event.users.length === 0) {
+        //     throw new Error('Event must have at least one user');
+        // }
+
+
+        //validation to check if it is a boolean
+        if(typeof event.isTrending != 'boolean') {
+            throw new Error('IsTrending must be a boolean.')
+        }
 
         this.id = event.id;
         this.name = event.name;
