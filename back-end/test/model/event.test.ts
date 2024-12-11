@@ -152,7 +152,7 @@ test('Given: event with no backgroundImage, When: an event is created, Then: bac
 
 test('Given: when isTrending is not a boolean, When: Event is made, Then: an error is thrown', () => {
     //Given:
-    const invalidIsTrending = "This is a string not a boolean.",
+    const invalidIsTrending = "This is a string not a boolean."
 
     //When:
     const createEvent = () => {

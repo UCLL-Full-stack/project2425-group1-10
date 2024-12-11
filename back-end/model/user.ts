@@ -23,6 +23,13 @@ export class User {
         age: number,
         role: Role,
     }) {
+        if (!user.username || !user.name || !user.email || !user.password) {
+            throw new Error("Fields cannot be empty");
+        }
+        if (user.password.length < 8) {
+            throw new Error("Password must be at least 8 characters long");
+        }
+
         this.id = user.id;
         this.username = user.username;
         this.name = user.name;
@@ -79,7 +86,7 @@ export class User {
         password,
         age,
         role,
-    }: UserPrisma & {role: RolePrisma}) {
+    }: UserPrisma & { role: RolePrisma }) {
         return new User({
             id,
             username,
