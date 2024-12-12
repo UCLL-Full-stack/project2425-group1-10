@@ -1,5 +1,5 @@
 import { User } from "../../model/user";
-import { Role } from "@prisma/client";
+import { Role } from "../../types";
 
 //sample data:
 const username = "ConanG";
@@ -7,10 +7,20 @@ const name = "Conan Gray";
 const email = "conangray@ucll.be";
 const password = "HeatherDay";
 const age = 25;
-const role = Role.PARTICIPANT;
+
+
+// const role = Role.'participant';
 
 //tests
 test('Given: valid values for user, when: user is created, then: user is created with those values', () => {
+    const username = "ConanG";
+    const name = "Conan Gray";
+    const email = "conangray@ucll.be";
+    const password = "HeatherDay";
+    const age = 25;
+    const role = 'participant' as Role;
+
+
     // Given
     const user = new User({
         username,
@@ -18,7 +28,7 @@ test('Given: valid values for user, when: user is created, then: user is created
         email,
         password,
         age,
-        role: Role.PARTICIPANT,
+        role: 'participant' as Role
     });
 
     // When
@@ -41,7 +51,7 @@ test('Given: users with the same username but different details, when: compared,
         email: "differentemail@ucll.be",
         password,
         age: 30,
-        role: Role.PARTICIPANT, // Corrected enum access
+        role: 'participant' as Role // Corrected enum access
     });
 
     const user2 = new User({
@@ -50,7 +60,7 @@ test('Given: users with the same username but different details, when: compared,
         email,
         password,
         age,
-        role: Role.PARTICIPANT, // Corrected enum access
+        role: 'participant' as Role // Corrected enum access
     });
 
     // When
@@ -72,7 +82,7 @@ test('Given: a password shorter than 8 characters, when: wanting to create a use
         email,
         password: shortPassword,
         age,
-        role: Role.PARTICIPANT,
+        role: 'participant' as Role
     });
 
     // Then
