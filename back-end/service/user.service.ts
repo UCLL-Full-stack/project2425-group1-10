@@ -6,7 +6,12 @@ const getAllUsers = async (): Promise<User[]> => {
 };
 
 const getUserById = async (id: number): Promise<User | null> => {
-    return userDb.getUserById({ id });
+    // return userDb.getUserById({ id });
+    const user = await userDb.getUserById({ id });
+    if (!user) {
+        throw new Error("User doesn't exist");
+    }
+    return user;
 };
 
 const getUserByEmail = async (email: string): Promise<User | null> => {
