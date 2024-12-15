@@ -4,7 +4,7 @@ import {
     // Role as RolePrisma,
     User as UserPrisma,
 } from '@prisma/client';
-
+//A: doesnt user need validation?
 export class User {
     private id?: number;
     private username: string;

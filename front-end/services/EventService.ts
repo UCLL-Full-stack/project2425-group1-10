@@ -70,6 +70,16 @@ const removeFromMyEvents = async (email: string, eventId: number) => {
   });
 };
 
+const createEvent = async (event: EventInput) => {
+  return fetch(process.env.NEXT_PUBLIC_API_URL + "/create-event", {
+    method: 'POST'?
+    headers: {
+          "Content-Type": "application/json",
+    },
+    body: JSON.stringify(event),
+  });
+}
+
 
 const EventService = {
   getAll,
@@ -77,6 +87,7 @@ const EventService = {
   addParticipantToEvent,
   getEventsByUserEmail,
   removeFromMyEvents,
+  createEvent,
 }
 
 export default EventService;

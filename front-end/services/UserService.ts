@@ -20,7 +20,7 @@ const createUser = async (user: UserInput) => {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(user),
+        body: JSON.stringify(user), //A: converts JS object in json-formatted string.
     });
 }
 
