@@ -52,7 +52,7 @@ const CreateEventForm: React.FC = () => {
         }
         return true; //A: In case of name if its not empty or there is a mail u will get true.
     };
-
+    //A: Handles form submission to create a new event.
     const handleFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -60,7 +60,7 @@ const CreateEventForm: React.FC = () => {
             return;
         }
 
-        clearErrors(); //A: This will clear all the errors
+        clearErrors(); //A: This will clear all the errors before going further.
 
         const event = { name, description, date, location, category, backgroundImage, isTrending };
         const response = await EventService.createEvent(event);
@@ -92,15 +92,100 @@ const CreateEventForm: React.FC = () => {
             console.log(responseBody); //A: check to see how its working
 
             setStatusMessages([{ message: responseBody.message, type: 'error' }]);
-    } else {
-        setStatusMessages([
-            {
-                message: 'An error has occured. Please try again later.',
-                type: 'error',
-            }
-        ]);
-    };
+        } else {
+            setStatusMessages([
+                {
+                    message: 'An error has occured. Please try again later.',
+                    type: 'error',
+                }
+            ]);
+        };
     }
+
+    return (
+        <>
+            <form onSubmit={handleFormSubmit} className={styles.createEventForm}>
+                {statusMessages && (  //A: Displays status messages if they exist.
+                    <div className="row">
+                        <ul>
+                            {statusMessages.map(({ message, type }, index) => (
+                                <li key={index} className={styles.eventStatusMessage}>
+                                    <img src="/icons/close-red.png" alt="error" width="40px" height="40px" />
+                                    <p>{message}</p>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+
+                {showSuccessIcon && (  //A: Displays success icon if `showSuccessIcon` is true.
+                    <img src="/icons/check-green.png" alt="success" width="40px" height="40px" className={styles.eventSuccessIcon} />
+                )}
+
+                <label htmlFor="name">Event Name:</label>
+                <input
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
+
+                <label htmlFor="description">Description:</label>
+                <textarea
+                    id="description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                />
+
+                <label htmlFor="date">Date:</label>
+                <input
+                    type="date"
+                    id="date"
+                    onChange={(e) => setDate(new Date(e.target.value))}  //A: Converts input to Date object.
+                />
+
+                <label htmlFor="location">Location:</label>
+                <input
+                    type="text"
+                    id="location"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                />
+
+                <label htmlFor="category">Category:</label>
+                <input
+                    type="text"
+                    id="category"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                />
+
+                <label htmlFor="backgroundImage">Background Image URL:</label>
+                <input
+                    type="text"
+                    id="backgroundImage"
+                    value={backgroundImage}
+                    onChange={(e) => setBackgroundImage(e.target.value)}
+                />
+
+                <label htmlFor="isTrending">Trending:</label>
+                <input
+                    type="checkbox"
+                    id="isTrending"
+                    checked={isTrending}
+                    onChange={(e) => setIsTrending(e.target.checked)}
+                />
+
+                <div className={styles.eventFormButtons}>
+                    <button type="submit">Create Event</button>
+                </div>
+
+                {errorMessage && (  //A: Displays error message if it exists.
+                    <p className={styles.eventErrorMessage}>{errorMessage}</p>
+                )}
+            </form>
+        </>
+    );
 };
 
 export default CreateEventForm;
