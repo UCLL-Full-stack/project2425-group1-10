@@ -75,6 +75,7 @@ const createEvent = async (event: EventInput) => {
     method: 'POST'?
     headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(event),
   });

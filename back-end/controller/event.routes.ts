@@ -170,10 +170,61 @@ eventRouter.put('/remove/:id/:email', async (req: Request, res: Response, next: 
     try {
         await eventService.removeEvent(email, eventId);
         res.status(200).json({ message: 'Event removed successfully.' });
-    } catch (error){
+    } catch (error) {
         console.log(error);
     }
 
 })
+
+// swagger for the create event:
+/**
+ * @swagger
+ * /events/create:
+ *   post:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Create a new event
+ *     tags:
+ *       - Events
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               date:
+ *                 type: string
+ *                 format: date
+ *               location:
+ *                 type: string
+ *               category:
+ *                 type: string
+ *               backgroundImage:
+ *                 type: string
+ *               isTrending:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Event created successfully.
+ *       400:
+ *         description: Invalid input or error occurred.
+ */
+eventRouter.post('/create', async (req: Request, res: Response, next: NextFunction) => {
+    const eventData = req.body;
+
+    try {
+        const newEvent = await eventService.createEvent(eventData);
+        res.status(200).json(newEvent);
+    } catch (error) {
+        next(error);
+    }
+});
+
+
 
 export { eventRouter };

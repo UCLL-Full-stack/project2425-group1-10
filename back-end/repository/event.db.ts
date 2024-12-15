@@ -1,5 +1,6 @@
 import { Event } from "../model/event";
 import prisma from '../repository/database';
+import { EventInput } from "../types";
 import database from './database';
 
 const getAllEvents = async (): Promise<Event[]> => {
@@ -110,9 +111,35 @@ const removeFromMyEvents = async (email: string, eventId: number) => {
     // return { success: true, message: `Event ${eventId} successfully deleted ${email}.` };
 };
 
+//Create event:
+const createEvent = async (eventData: EventInput): Promise<Event> => {
+    try {
+        const eventPrisma = await database.event.create({
+            data: {
+                name: eventData.name,
+                description: eventData.description,
+                date: eventData.date,
+                location: eventData.location,
+                category: eventData.category,
+                backgroundImage: eventData.backgroundImage || undefined, // Optional field
+                isTrending: eventData.isTrending,
+            },
+            include: {
+                users: true, //A: Not sure about this part =>  saw in the lab06.
+            },
+        });
+
+        return Event.from(eventPrisma);
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
+    }
+};
+
+
 
 export default {
-    // createEvent,
+    createEvent,
     getAllEvents,
     getEventById,
     // addParticipantToEvent,
