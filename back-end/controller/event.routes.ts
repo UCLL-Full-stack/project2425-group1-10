@@ -67,6 +67,26 @@ eventRouter.get('/', async (req: Request, res: Response, next: NextFunction) => 
     }
 });
 
+/**
+ * @swagger
+ * /events/{email}:
+ *   get:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Get events by user email.
+ *     parameters:
+ *       - name: email
+ *         in: path
+ *         required: true
+ *         description: The email address of the user to retrieve events for.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of events for the specified user.
+ *       400:
+ *         description: Invalid email or error fetching events.
+ */
 eventRouter.get('/:email', async (req: Request, res: Response, next: NextFunction) => {
 
     try {
@@ -143,7 +163,6 @@ eventRouter.get('/details/:id', async (req: Request, res: Response, next: NextFu
  *       400:
  *         description: Error adding participant.
  */
-
 eventRouter.put('/:id/:email', async (req: Request, res: Response, next: NextFunction) => {
     const eventId = parseInt(req.params.id, 10);
     const email = req.params.email;
@@ -162,7 +181,32 @@ eventRouter.put('/:id/:email', async (req: Request, res: Response, next: NextFun
 });
 
 
-
+/**
+ * @swagger
+ * /remove/{id}/{email}:
+ *   delete:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Remove user by ID and email.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: The unique ID of the user to remove.
+ *         schema:
+ *           type: string
+ *       - name: email
+ *         in: path
+ *         required: true
+ *         description: The email address of the user to remove.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User successfully removed.
+ *       400:
+ *         description: Invalid input or missing parameters.
+ */
 eventRouter.put('/remove/:id/:email', async (req: Request, res: Response, next: NextFunction) => {
     const eventId = parseInt(req.params.id, 10);
     const email = req.params.email;

@@ -136,6 +136,33 @@ const createEvent = async (eventData: EventInput): Promise<Event> => {
     }
 };
 
+// const createEvent = async (event: Event, userIds: number[]): Promise<Event> => {
+//     try {
+//         // Creating event and associating it with the users by their IDs
+//         const eventPrisma = await database.event.create({
+//             data: {
+//                 name: event.getName(),
+//                 description: event.getDescription(),
+//                 date: event.getDate(),
+//                 location: event.getLocation(),
+//                 category: event.getCategory(),
+//                 backgroundImage: event.getBackgroundImage(),
+//                 isTrending: event.getIsTrending(),
+//                 users: {
+//                     connect: userIds.map(userId => ({ id: userId })) // Connecting users by their IDs
+//                 }
+//             }
+//         });
+//         return Event.from(eventPrisma);  // Return the created event with associated users
+//     } catch (error) {
+//         console.error("Error creating event:", error);
+//         throw new Error("Failed to create event");
+//     }
+// };,
+
+
+
+
 
 
 export default {
