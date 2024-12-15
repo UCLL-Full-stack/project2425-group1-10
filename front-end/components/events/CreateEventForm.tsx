@@ -92,7 +92,15 @@ const CreateEventForm: React.FC = () => {
             console.log(responseBody); //A: check to see how its working
 
             setStatusMessages([{ message: responseBody.message, type: 'error' }]);
+    } else {
+        setStatusMessages([
+            {
+                message: 'An error has occured. Please try again later.',
+                type: 'error',
+            }
+        ]);
     };
+    }
 };
 
 export default CreateEventForm;
