@@ -2,7 +2,7 @@ import UserService from '@services/UserService';
 import styles from '@styles/home.module.css';
 import { useRouter } from 'next/router';
 import { use, useState } from 'react';
-import { Role } from 'types';
+import {Role} from 'types';
 
 const UserSignupForm: React.FC = () => {
     const [username, setUsername] = useState('');
@@ -18,6 +18,9 @@ const UserSignupForm: React.FC = () => {
     const [passwordError, setPasswordError] = useState('');
     const [ageError, setAgeError] = useState('');
     const [roleError, setRoleError] = useState('');
+
+    const [statusMessage, setStatusMessage] = useState<string>("");
+    const [showStatus, setShowStatus] = useState(false);
 
     const router = useRouter();
 
@@ -79,12 +82,17 @@ const UserSignupForm: React.FC = () => {
             console.log(response);
     
             if (response.ok) {
-                alert('User created successfully!');
-            } else {
-                alert('User creation failed!');
-            }
+                setStatusMessage('User created successfully! Redirecting...');
+                setShowStatus(true);
     
-            // router.push('/');
+                setTimeout(() => {
+                    router.push('/');
+                }, 2000);
+
+            } else {
+                setStatusMessage('User creation failed!');
+                setShowStatus(true);
+            }
         }
     };
 
@@ -165,6 +173,7 @@ const UserSignupForm: React.FC = () => {
                         className={styles.userSignupButton}
                     >Sign up</button>
                 </div>
+                {showStatus && <p className={styles.loginSuccessMessage}>{statusMessage}</p>}
             </form>
         </>
     )

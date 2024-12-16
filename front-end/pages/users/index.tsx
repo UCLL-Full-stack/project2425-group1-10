@@ -48,7 +48,7 @@ const Users: React.FC = () => {
                 }
 
                 {showErrorMessage &&
-                    <p>
+                    <p className="mt-3">
                         {errorMessage}
                     </p>
                 }

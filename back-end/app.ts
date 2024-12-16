@@ -7,6 +7,7 @@ import swaggerUi from 'swagger-ui-express';
 import { eventRouter } from './controller/event.routes';
 // import { participantRouter } from './controller/participant.routes';
 import { userRouter } from './controller/user.routes';
+import { ticketRouter } from './controller/ticket.routes';
 import { expressjwt } from 'express-jwt';
 import helmet from 'helmet';
 
@@ -71,6 +72,7 @@ app.get('/status', (req: Request, res: Response) => {
 
 app.use('/events', eventRouter);
 app.use('/users', userRouter);
+app.use('/tickets', ticketRouter);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err.name === 'UnauthorizedError') {

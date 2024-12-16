@@ -1,6 +1,7 @@
 import EventDetails from "@components/events/EventDetails";
 import Header from "@components/header";
 import EventService from "@services/EventService";
+import TicketService from "@services/TicketService";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -18,6 +19,10 @@ const RenderEventDetailsById: React.FC = () => {
     const [showError, setShowError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
+    // Show success message
+    const [showStatus, setShowStatus] = useState(false);
+    const [statusMessage, setStatusMessage] = useState("");
+
     // const [eventId, setEventId] = useState<string>(null);
 
     const router = useRouter();
@@ -29,9 +34,9 @@ const RenderEventDetailsById: React.FC = () => {
     useEffect(() => {
         const loggedInUser = localStorage.getItem('loggedInUser');
         const user = loggedInUser ? JSON.parse(loggedInUser) : null;
-        
+
         // Only user exists people can see the participant list
-        if ((user && user.role === 'PARTICIPANT') || !user){
+        if ((user && user.role === 'PARTICIPANT') || !user) {
             setShowAddButton(false);
             setShowParticipantList(false);
         }
@@ -50,31 +55,31 @@ const RenderEventDetailsById: React.FC = () => {
 
     const getEventById = async () => {
         try {
-            
+
             const response = await EventService.getEventById(eventId as string);
             const eventData = await response.json();
             setEvent(eventData);
-            
+
         } catch (error) {
             console.error("Failed to fetch event:", error);
         }
     };
 
-    const addParticipantToEvent = async () => {
+    const addSelfToEvent = async (ticketId: string, selfEmail: string) => {
         try {
-            setShowError(false);
-            setEmail("");
-            setShowForm(false);
-            setShowAddButton(true);
-            const response = await EventService.addParticipantToEvent(email, eventId as string);
-            setEvent(response);
+            const response = await TicketService.userBuyTicket(ticketId, selfEmail);
+
+            getEventById();
+
+            setStatusMessage("Event has been successfully added to your 'My events' page. Redirecting...");
+            setShowStatus(true);
+
+            setTimeout(() => {
+                router.push("/my-events");
+            }, 2000);
 
         } catch (error) {
-            if (error instanceof Error) {
-                setErrorMessage(error.message);
-            } else {
-                setErrorMessage("An unknown error occurred");
-            }
+            setErrorMessage("You are already a participant of this event.");
             setShowError(true);
         }
     };
@@ -83,11 +88,6 @@ const RenderEventDetailsById: React.FC = () => {
         setShowError(false);
         setShowForm(true);
         setShowAddButton(false);
-    };
-
-    const handleFormSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        addParticipantToEvent();
     };
 
     return (
@@ -103,7 +103,7 @@ const RenderEventDetailsById: React.FC = () => {
                 <h1>Event Details</h1>
                 {event ? (
                     <section className={styles.eventDetails}>
-                        <EventDetails event={event} showParticipantList={showParticipantList} />
+                        <EventDetails event={event} showParticipantList={showParticipantList} addSelfToEvent={addSelfToEvent} />
                     </section>
                 ) : (
                     <p>Loading event details...</p>
@@ -113,29 +113,8 @@ const RenderEventDetailsById: React.FC = () => {
                     <p className={styles.errorMessage}>{errorMessage}</p>
                 )}
 
-                {showAddButton && (
-                    <button
-                        onClick={handleAddParticipant}
-                        className={styles.addParticipantButton}
-                    >
-                        Add participant
-                    </button>
-                )}
-
-                {showForm && (
-                    <form
-                        onSubmit={handleFormSubmit}
-                        className={styles.addParticipantForm}>
-                        <label htmlFor="email">Email:</label>
-                        <input
-                            type="email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        <button type="submit">Submit</button>
-                    </form>
+                {showStatus && (
+                    <p className={styles.statusMessage}>{statusMessage}</p>
                 )}
             </main>
         </>

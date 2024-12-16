@@ -1,4 +1,5 @@
 type Role = 'ADMIN' | 'PARTICIPANT' | 'ORGANIZER';
+type TicketType = 'VIP' | 'REGULAR' | 'STUDENT' | 'FREE';
 
 type UserInput = {
     id?: number,
@@ -18,7 +19,6 @@ type EventInput = {
     location: string,
     category: string,
     backgroundImage?: string,
-    users: UserInput[],
     isTrending: boolean,
 };
 
@@ -30,8 +30,10 @@ type InviteInput = {
 
 type TicketInput = {
     id?: number,
-    type: 'VIP' | 'Regular',
+    type: TicketType,
     cost: number,
+    user?: UserInput,
+    event: EventInput,
 };
 
 type AuthenticationResponse = {
@@ -44,6 +46,7 @@ type AuthenticationResponse = {
 
 export {
     Role,
+    TicketType,
     EventInput,
     UserInput,
     InviteInput,

@@ -50,10 +50,6 @@ const UserLoginForm: React.FC = () => {
         console.log(response.status);
 
         if (response.status === 200) {
-            // setStatusMessages([{ message: "Login successful. Redirecting to homepage...", type: "success" }]);
-            // // sessionStorage.setItem("loggedUserEmail", email);
-            // // sessionStorage.setItem("loggedUserPassword", password);
-
             setShowSuccessIcon(true);
 
             const user = await response.json();
@@ -114,9 +110,20 @@ const UserLoginForm: React.FC = () => {
                 )}
 
                 {showSuccessIcon &&
-                    <img src="/icons/check-green.png" alt="success" width="40px" height="40px" className={styles.loginSuccessIcon} />
+                    <>
+                        <img
+                            src="/icons/check-green.png"
+                            alt="success" width="40px"
+                            height="40px"
+                            className={styles.loginSuccessIcon} />
+                        <p
+                            className={styles.loginSuccessMessage}
+                        >
+                            Login successful. Redirecting to homepage...
+                        </p>
+                    </>
                 }
-                
+
                 <label htmlFor="email">Email:</label>
                 <input
                     type="email"

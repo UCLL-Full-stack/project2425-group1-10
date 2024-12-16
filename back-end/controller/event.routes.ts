@@ -34,6 +34,7 @@
 
 import express, { NextFunction, Request, Response } from 'express';
 import eventService from '../service/event.service';
+import ticketService from '../service/ticket.service';
 
 const eventRouter = express.Router();
 
@@ -70,11 +71,9 @@ eventRouter.get('/', async (req: Request, res: Response, next: NextFunction) => 
 eventRouter.get('/:email', async (req: Request, res: Response, next: NextFunction) => {
 
     try {
-        console.log("byEMail");
-        console.log(req.params.email);
-        const events = await eventService.getEventsByUserEmail(req.params.email);
-        console.log(events);
-        res.status(200).json(events);
+        const userEmail = req.params.email;
+        const tickets = await ticketService.getTicketsByUserEmail(userEmail);        
+        res.status(200).json(tickets);
     } catch (error) {
         res.status(400).json({ status: 'error' });
     }
@@ -144,87 +143,36 @@ eventRouter.get('/details/:id', async (req: Request, res: Response, next: NextFu
  *         description: Error adding participant.
  */
 
-eventRouter.put('/:id/:email', async (req: Request, res: Response, next: NextFunction) => {
-    const eventId = parseInt(req.params.id, 10);
-    const email = req.params.email;
+// eventRouter.put('/:id/:email', async (req: Request, res: Response, next: NextFunction) => {
+//     const eventId = parseInt(req.params.id, 10);
+//     const email = req.params.email;
 
-    try {
-        const updatedEvent = await eventService.addParticipantToEvent(email, eventId);
-        res.status(200).json(updatedEvent);
-    } catch (error) {
-        console.log(error);
-        if (error instanceof Error) {
-            res.status(400).json({ status: 'error', message: error.message });
-        } else {
-            res.status(400).json({ status: 'error', message: 'Unknown error' });
-        }
-    }
-});
+//     try {
+//         const updatedEvent = await eventService.addParticipantToEvent(email, eventId);
+//         res.status(200).json(updatedEvent);
+//     } catch (error) {
+//         console.log(error);
+//         if (error instanceof Error) {
+//             res.status(400).json({ status: 'error', message: error.message });
+//         } else {
+//             res.status(400).json({ status: 'error', message: 'Unknown error' });
+//         }
+//     }
+// });
 
 
 
-eventRouter.put('/remove/:id/:email', async (req: Request, res: Response, next: NextFunction) => {
-    const eventId = parseInt(req.params.id, 10);
-    const email = req.params.email;
+// eventRouter.put('/remove/:id/:email', async (req: Request, res: Response, next: NextFunction) => {
+//     const eventId = parseInt(req.params.id, 10);
+//     const email = req.params.email;
 
-    try {
-        await eventService.removeEvent(email, eventId);
-        res.status(200).json({ message: 'Event removed successfully.' });
-    } catch (error) {
-        console.log(error);
-    }
+//     try {
+//         await eventService.removeEvent(email, eventId);
+//         res.status(200).json({ message: 'Event removed successfully.' });
+//     } catch (error) {
+//         console.log(error);
+//     }
 
 })
-
-// swagger for the create event:
-/**
- * @swagger
- * /events/create:
- *   post:
- *     security:
- *       - bearerAuth: []
- *     summary: Create a new event
- *     tags:
- *       - Events
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *               description:
- *                 type: string
- *               date:
- *                 type: string
- *                 format: date
- *               location:
- *                 type: string
- *               category:
- *                 type: string
- *               backgroundImage:
- *                 type: string
- *               isTrending:
- *                 type: boolean
- *     responses:
- *       200:
- *         description: Event created successfully.
- *       400:
- *         description: Invalid input or error occurred.
- */
-eventRouter.post('/create', async (req: Request, res: Response, next: NextFunction) => {
-    const eventData = req.body;
-
-    try {
-        const newEvent = await eventService.createEvent(eventData);
-        res.status(200).json(newEvent);
-    } catch (error) {
-        next(error);
-    }
-});
-
-
 
 export { eventRouter };

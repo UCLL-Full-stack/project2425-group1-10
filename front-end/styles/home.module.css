@@ -37,12 +37,18 @@
     flex-direction: column;
     align-items: center;
     border-top: 1px solid white;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    /* box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); */
+    background-color: white;
+    /* padding: 1rem 1rem; */
+    border-radius: 20px;
+    border: 1px solid black;
+    margin-left: 4rem;
+    margin-right: 4rem;
+    margin-bottom: 4rem;
+    /* margin-top: 2rem; */
 }
 
 .usersTable thead {
-    width: 100%;
-    border-bottom: 1px solid black;
     text-align: center;
 }
 
@@ -88,6 +94,9 @@
     grid-template-columns: repeat(3, 1fr);
     justify-content: center;
     gap: 2rem;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 30px;
 }
 
 .event {
@@ -108,13 +117,64 @@
     /* height: min-content; */
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;;
-    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    /* box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); */
 }
 
 .event:hover {
     transform: scale(1.05);
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 
+}
+
+.eventTickets {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 3 !important;
+}
+
+.eventTickets button,
+.noTickets {
+    border: 0 !important;
+    background-color: white !important;
+}
+
+.noTickets {
+    border-radius: 10px;
+    background-color: red !important;
+    color: white;
+    z-index: 3;
+}
+
+.eventDetailTickets {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    border-top: 2px solid black;
+    margin-top: 2rem;
+    padding-top: 2rem;
+}
+
+.eventDetailTickets button {
+    /* border: none !important;
+    color: white;
+    background-color: black;
+    transition: 0.2s ease-in-out; */
+    padding: 10px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    transition: 0.3s ease;
+}
+
+.eventDetailTickets button:hover {
+    /* background-color: rgb(44, 165, 4); */
+    transform: scale(1.1);
 }
 
 /* Remove button styling */
@@ -152,16 +212,16 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8));
-    z-index: 1; /* Ensure the overlay is above the background but below the text */
+    z-index: 2; /* Ensure the overlay is above the background but below the text */
 }
 
 .event h3 {
-    z-index: 2;
+    z-index: 3;
     margin: 0;
 }
 
 .event h5 {
-    z-index: 2;
+    z-index: 3;
 }
 
 .event p {
@@ -169,15 +229,15 @@
     color: black;
     /* background-color: white; */
     padding: 0.5rem 1rem;
-    display: inline-block;
+    /* display: inline-block; */
     width: min-content;
     background-color: rgba(255, 255, 255, 0.4);
     margin: 0;
-    z-index: 2;
+    z-index: 3;
 }
 
 .desc {
-    z-index: 2;
+    z-index: 3;
     background-color: transparent !important;
     padding: 0 !important;
     color: white !important;
@@ -206,8 +266,14 @@
     justify-content: center;
     align-items: center;
     /* align-content: center; */
-    margin-top: 2rem;
+    /* margin-top: 2rem; */
+    background-color: white;
+    padding-top: 2rem;
     padding-bottom: 2rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    border-radius: 20px;
+    border: 1px solid black;
 }
 
 .eventDetails {
@@ -344,6 +410,10 @@
     color: #FF0000;
 }
 
+.loginSuccessMessage {
+    color: #00FF00;
+}
+
 .myEventsLoginSignupButtons {
     display: flex;
     flex-direction: row;
@@ -378,6 +448,10 @@
 
 .errorMessage {
     color: red;
+}
+
+.statusMessage {
+    color: green;
 }
 
 .description {

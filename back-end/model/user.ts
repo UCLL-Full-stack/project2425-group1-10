@@ -89,6 +89,5 @@ export class User {
             age,
             role: role as Role,
         });
-    }
-
+    };
 }

@@ -1,9 +1,11 @@
 import {
     Event as EventPrisma,
     // user as userPrisma,
-    User as UserPrisma,
+    // Ticket as TicketPrisma,
+    // User as UserPrisma,
 } from '@prisma/client';
 import { User } from './user';
+import { Ticket } from './ticket';
 
 
 export class Event {
@@ -14,8 +16,8 @@ export class Event {
     private location: string;
     private category: string;
     private backgroundImage?: string;
-    private users: User[];
     private isTrending: boolean;
+    // private tickets: Ticket[];
 
     constructor(event: {
         id?: number,
@@ -25,8 +27,8 @@ export class Event {
         location: string,
         category: string;
         backgroundImage?: string;
-        users: User[];
         isTrending: boolean;
+        // tickets?: Ticket[];
     }) {
         // Validate the date
         if (isNaN(event.date.getTime())) {
@@ -53,25 +55,14 @@ export class Event {
         this.location = event.location;
         this.category = event.category;
         this.backgroundImage = event.backgroundImage;
-        this.users = event.users;
         this.isTrending = event.isTrending;
+        // this.tickets = event.tickets || [];
     }
 
     getIsTrending(): boolean {
         return this.isTrending;
     }
 
-    setUsers(users: User[]): void {
-        this.users = users;
-    }
-
-    addUser(user: User): void {
-        this.users.push(user);
-    }
-
-    getUsers(): User[] {
-        return this.users;
-    }
 
     getId(): number | undefined {
         if (this.id === undefined) {
@@ -104,6 +95,10 @@ export class Event {
         return this.backgroundImage;
     }
 
+    // getTickets(): Ticket[] {
+    //     return this.tickets;
+    // }
+
     equals(event: Event): boolean {
         return (
             this.name === event.getName() &&
@@ -122,9 +117,11 @@ export class Event {
         location,
         category,
         backgroundImage,
-        users,
         isTrending,
-    }: EventPrisma & { users: UserPrisma[] }) {
+        // tickets,
+    }: EventPrisma & {
+        // tickets: TicketPrisma[];
+    }) {
         return new Event({
             id,
             name,
@@ -133,9 +130,9 @@ export class Event {
             location,
             category,
             backgroundImage,
-            users: users.map((user) => User.from(user)),
             isTrending,
-        })
+            // tickets: tickets.map((ticket) => Ticket.from(ticket)),
+        });
     }
 
 }

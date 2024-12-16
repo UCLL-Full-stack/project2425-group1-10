@@ -12,6 +12,8 @@ type Props = {
 
 const EventOverview: React.FC<Props> = ({ events, showDeleteButton, email }: Props) => {
   const router = useRouter();
+  const [user, setUsers] = useState<UserInput[]>();
+  const [showTickets, setShowTickets] = useState<boolean>(false);
 
   const handleEventClick = (eventId: number) => {
     sessionStorage.setItem('eventId', eventId.toString());
@@ -24,7 +26,7 @@ const EventOverview: React.FC<Props> = ({ events, showDeleteButton, email }: Pro
   const removeEvent = async (eventId: number) => {
     await EventService.removeFromMyEvents(email, eventId);
 
-  // Renew the events list when an event is removed
+    // Renew the events list when an event is removed
     setMyEvents(myEvents.filter(event => event.id !== eventId));
   }
 
@@ -45,8 +47,8 @@ const EventOverview: React.FC<Props> = ({ events, showDeleteButton, email }: Pro
                 <h3>{event.name}</h3>
                 <p className={styles.desc}>{event.description}</p>
                 <p>{new Date(event.date).toLocaleDateString()}</p>
-                <p className={styles.hiddenOb}>{event.location}</p>
-                <p className={styles.hiddenOb}>{event.category}</p>
+                {/* <p className={styles.hiddenOb}>{event.location}</p>
+                <p className={styles.hiddenOb}>{event.category}</p> */}
 
                 <div>
                   {showDeleteButton === true &&
@@ -65,7 +67,7 @@ const EventOverview: React.FC<Props> = ({ events, showDeleteButton, email }: Pro
             ))}
           </div>
         ) : (
-            <p className="text-white">You don't have any upcoming events...</p>
+          <p className="text-white">There are no upcoming events...</p>
         )}
       </section>
     </>

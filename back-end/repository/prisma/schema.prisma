@@ -15,7 +15,7 @@ model User {
     password    String
     age         Int
     role        String
-    events      Event[]
+    tickets      Ticket[]
 }
 
 model Event {
@@ -26,6 +26,16 @@ model Event {
     location        String
     category        String
     backgroundImage String @default("")
-    users           User[]
     isTrending      Boolean
+    tickets         Ticket[]
+}
+
+model Ticket {
+    id    Int   @id   @default(autoincrement())
+    type  String
+    cost  Int
+    event  Event   @relation(fields: [eventId], references: [id])
+    eventId Int
+    user  User?  @relation(fields: [userId], references: [id])
+    userId  Int?
 }
