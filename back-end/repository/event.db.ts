@@ -126,10 +126,7 @@ const createEvent = async (eventData: EventInput): Promise<Event> => {
                 category: eventData.category,
                 backgroundImage: eventData.backgroundImage || undefined, // Optional field
                 isTrending: eventData.isTrending,
-            },
-            include: {
-                users: true, //A: Not sure about this part =>  saw in the lab06.
-            },
+            }
         });
 
         return Event.from(eventPrisma);

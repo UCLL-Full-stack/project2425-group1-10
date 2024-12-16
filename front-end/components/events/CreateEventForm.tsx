@@ -65,6 +65,7 @@ const CreateEventForm: React.FC = () => {
         const event = { name, description, date, location, category, backgroundImage, isTrending };
         const response = await EventService.createEvent(event);
 
+
         //A: To check if things are working correctly thus far:
         console.log(response.status);
 
@@ -181,6 +182,10 @@ const CreateEventForm: React.FC = () => {
                     onChange={(e) => setIsTrending(e.target.checked)}
                 />
 
+                
+
+
+                
                 <div className={styles.myEventsLoginSignupButtons}>
                     <button
                         type="submit"
