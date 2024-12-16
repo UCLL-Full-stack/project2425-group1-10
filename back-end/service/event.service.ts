@@ -36,6 +36,10 @@ const removeEvent = async (email: string, eventId: number) => {
     return await eventDb.removeFromMyEvents(email, eventId);
 };
 
+const createEvent = async (event: EventInput): Promise<Event> => {
+    return await eventDb.createEvent(event);
+}
+
 
 export default {
     createEvent,

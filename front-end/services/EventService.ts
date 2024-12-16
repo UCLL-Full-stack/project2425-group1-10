@@ -70,10 +70,12 @@ const removeFromMyEvents = async (email: string, eventId: number) => {
   });
 };
 
+
+
 const createEvent = async (event: EventInput) => {
-  //const token = JSON.parse(localStorage.getItem("loggedInUser"))?.token;
-  return fetch(process.env.NEXT_PUBLIC_API_URL + "/create-event", {
-    method: 'POST'?
+  const token = JSON.parse(localStorage.getItem("loggedInUser"))?.token;
+  return await fetch(apiUrl + "/events/create-event", {
+    method: 'POST',
     headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
