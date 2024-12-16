@@ -72,7 +72,7 @@ eventRouter.get('/:email', async (req: Request, res: Response, next: NextFunctio
 
     try {
         const userEmail = req.params.email;
-        const tickets = await ticketService.getTicketsByUserEmail(userEmail);        
+        const tickets = await ticketService.getTicketsByUserEmail(userEmail);
         res.status(200).json(tickets);
     } catch (error) {
         res.status(400).json({ status: 'error' });
@@ -174,5 +174,53 @@ eventRouter.get('/details/:id', async (req: Request, res: Response, next: NextFu
 //     }
 
 // })
+// swagger for the create event:
+/**
+ * @swagger
+ * /events/create:
+ *   post:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Create a new event
+ *     tags:
+ *       - Events
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               date:
+ *                 type: string
+ *                 format: date
+ *               location:
+ *                 type: string
+ *               category:
+ *                 type: string
+ *               backgroundImage:
+ *                 type: string
+ *               isTrending:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Event created successfully.
+ *       400:
+ *         description: Invalid input or error occurred.
+ */
+eventRouter.post("/create-event", async (req: Request, res: Response, next: NextFunction) => {
+    const eventData = req.body;
+
+    try {
+        const newEvent = await eventService.createEvent(eventData);
+        res.status(200).json(newEvent);
+    } catch (error) {
+        next(error);
+    }
+});
 
 export { eventRouter };
