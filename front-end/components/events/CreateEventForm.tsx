@@ -126,6 +126,7 @@ const CreateEventForm: React.FC = () => {
                 <input
                     type="text"
                     id="name"
+                    placeholder='example: Taylor Swift'
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                 />
@@ -133,6 +134,7 @@ const CreateEventForm: React.FC = () => {
                 <label htmlFor="description">Description:</label>
                 <textarea
                     id="description"
+                    placeholder='example: This concert will give you the best songs of Taylor Swift.'
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                 />
@@ -148,6 +150,7 @@ const CreateEventForm: React.FC = () => {
                 <input
                     type="text"
                     id="location"
+                    placeholder='example: Vorst National Brussels'
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                 />
@@ -156,6 +159,7 @@ const CreateEventForm: React.FC = () => {
                 <input
                     type="text"
                     id="category"
+                    placeholder='example: Concert'
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                 />
@@ -164,6 +168,7 @@ const CreateEventForm: React.FC = () => {
                 <input
                     type="text"
                     id="backgroundImage"
+                    placeholder='example: https://www.nytimes.com'
                     value={backgroundImage}
                     onChange={(e) => setBackgroundImage(e.target.value)}
                 />
@@ -176,8 +181,13 @@ const CreateEventForm: React.FC = () => {
                     onChange={(e) => setIsTrending(e.target.checked)}
                 />
 
-                <div className={styles.eventFormButtons}>
-                    <button type="submit">Create Event</button>
+                <div className={styles.myEventsLoginSignupButtons}>
+                    <button
+                        type="submit"
+                        className={styles.createEventButton}
+                    >
+                        Create Event
+                    </button>
                 </div>
 
                 {errorMessage && (  //A: Displays error message if it exists.

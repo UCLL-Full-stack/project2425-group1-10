@@ -640,12 +640,14 @@
 /* Form Container */
 .formContainerCompact {
     background: #000000;
-    padding: 30px;
+    padding: 25px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Soft white shadow */
-    width: 100%;
+    width: 90%;
     max-width: 350px; /* Compact width matching the login form */
     text-align: left;
+    font-weight: bolder;
+    
 }
 
 /* Title */
@@ -697,7 +699,43 @@
 .eventErrorMessage {
     color: red; /* Basic red text */
 }
+
+
+/*here*/
+.createEventButton {
+    padding: 10px;
+    background-color: black;
+    color: white;
+    border: 0.5px solid white;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    transition: transform 0.6s ease, box-shadow 0.6s ease, background-color 0.6s ease, border 0.6s ease;
+    width: 100%;
+}
+
+.createEventButton:hover {
+    background-color: white;
+    color: black;
+    transform: scale(1.05);
+    border: 0.5px solid black;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 15px rgba(255, 255, 255, 0.6);
+}
+
+
+
+
+
+
+
+
+
+
+
+
 /*end*/
+
+
 
 
 
