@@ -169,10 +169,10 @@ eventRouter.get('/details/:id', async (req: Request, res: Response, next: NextFu
 //     try {
 //         await eventService.removeEvent(email, eventId);
 //         res.status(200).json({ message: 'Event removed successfully.' });
-//     } catch (error) {
+//     } catch (error){
 //         console.log(error);
 //     }
 
-})
+// })
 
 export { eventRouter };
