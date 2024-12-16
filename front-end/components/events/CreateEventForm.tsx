@@ -17,6 +17,7 @@ const CreateEventForm: React.FC = () => {
     const [isTrending, setIsTrending] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>(""); //A: The ("") means the initial value of the SV is an empty string.
     const [statusMessages, setStatusMessages] = useState<StatusMessage[]>([]); //A: for general status messages (error or succes)
+    
     //A: The first statusMessages will store the data. The <StatusMessage[]> indicates that it should be an array of objects of type statusMessage and it is findable in another part of the project. It starts empty but can be modified with the set... .
     const [showSuccessIcon, setShowSuccessIcon] = useState<boolean>(false);
 
@@ -281,12 +282,6 @@ const CreateEventForm: React.FC = () => {
                         />
                     </div>
                 ))}
-
-
-
-
-
-
 
                 {/* <label htmlFor="ticketType">Ticket type:</label>
                 <select
