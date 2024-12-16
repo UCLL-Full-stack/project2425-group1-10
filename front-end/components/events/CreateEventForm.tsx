@@ -20,6 +20,11 @@ const CreateEventForm: React.FC = () => {
     //A: The first statusMessages will store the data. The <StatusMessage[]> indicates that it should be an array of objects of type statusMessage and it is findable in another part of the project. It starts empty but can be modified with the set... .
     const [showSuccessIcon, setShowSuccessIcon] = useState<boolean>(false);
 
+    //A: for the tickets:
+    const [ticketAmount, setTicketAmount] = useState<number | null>(null);
+    const [ticketType, setTicketType] = useState<string[]>([]); //A: Array to store ticket types for each ticket => array cause u can have multiple tickets.
+
+
     const clearErrors = () => {
         setErrorMessage("");
         setStatusMessages([]);
@@ -48,6 +53,14 @@ const CreateEventForm: React.FC = () => {
         };
         if (!isTrending) {
             setErrorMessage("Trending status must be enabled.");
+            return false;
+        }
+        if (ticketAmount === null || ticketAmount < 1 || ticketAmount > 5) {
+            setErrorMessage("Ticket amount is required and must be between 1 and 5.");
+            return false;
+        }
+        if (!ticketType) {
+            setErrorMessage("Ticket type is required.")
             return false;
         }
         return true; //A: In case of name if its not empty or there is a mail u will get true.
@@ -102,6 +115,11 @@ const CreateEventForm: React.FC = () => {
             ]);
         };
     }
+    const handleTicketTypeChange = (index: number, value: string) => {
+        const newTicketTypes = [...ticketType]; //A: Deze regel maakt een kopie van de ticketType array, omdat in react het niet echt een goed idee is om arrays direct te muteren.
+        newTicketTypes[index] = value; //A: als we bv 4 tickets( index = 4 ) hebben is het zoals dit: ticketType = ["", "", "", ""]; Lege waarden voor elk van de 4 tickets.
+        setTicketType(newTicketTypes);
+    };
 
     return (
         <>
@@ -182,10 +200,74 @@ const CreateEventForm: React.FC = () => {
                     onChange={(e) => setIsTrending(e.target.checked)}
                 />
 
-                
 
 
-                
+                <label htmlFor="ticketAmount">Ticket amount:</label>
+                <select
+                    name="ticketAmount"
+                    id="ticketAmount"
+                    value={ticketAmount || ""} //A: starts empty
+                    onChange={(e) => {
+                        const amount = e.target.value ? parseInt(e.target.value) : 0;
+                        setTicketAmount(amount);
+                        setTicketType(Array(amount).fill('')); // Reset ticket types when ticket amount changes
+                    }}
+                    
+                >
+                    <option value="" disabled selected hidden>Select ticket amount</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                {/*
+                < input
+                    type="number"
+                    name="ticketAmount"
+                    min="0"
+                    max="5"
+                    placeholder="0-5"
+                    value={ticketAmount || ""}
+                    onChange={(e) => {
+                        const amount = e.target.value ? parseInt(e.target.value) : 0;
+                        setTicketAmount(amount);
+                        setTicketType(Array(amount).fill('')); // Reset ticket types when ticket amount changes
+                    }}
+                /> */}
+
+                {/*A: Dit deel gaat er voor zorgen dat je het aantal keer van de tickets kan zien*/}
+                {ticketAmount && ticketAmount > 0 && [...Array(ticketAmount)].map((_, index) => (
+                    <div key={index}>
+                        <label htmlFor={`ticketType-${index}`}>Ticket type {index + 1}:</label>
+                        <select
+                            name={`ticketType-${index}`}
+                            id={`ticketType-${index}`}
+                            value={ticketType[index] || ''}
+                            onChange={(e) => handleTicketTypeChange(index, e.target.value)}
+                        >
+                            <option value="" disabled hidden>No ticket selected</option>
+                            <option value="Normal">Normal</option>
+                            <option value="VIP">VIP</option>
+                        </select>
+                    </div>
+                ))}
+                {/* <label htmlFor="ticketType">Ticket type:</label>
+                <select
+                    name= "ticketType"
+                    id= "ticketType"
+                    // placeholder="select" doesn't work with select.
+                    value= {ticketType}
+                    onChange={(e) => setTicketType(e.target.value)}
+                >
+                    <option value="" disabled selected hidden>No ticket selected</option>
+                    <option value="Normal">Normal</option>
+                    <option value="VIP">VIP</option>
+
+                </select> */}
+
+
                 <div className={styles.myEventsLoginSignupButtons}>
                     <button
                         type="submit"
