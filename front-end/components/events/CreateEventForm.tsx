@@ -13,7 +13,7 @@ const CreateEventForm: React.FC = () => {
     const [date, setDate] = useState<Date | null>(null);
     const [location, setLocation] = useState<string>("");
     const [category, setCategory] = useState<string>("");
-    const [backgroundImage, setBackgroundImage] = useState<string>("");
+    const [backgroundImage, setBackgroundImage] = useState<string>("");//A: lege string als start
     const [isTrending, setIsTrending] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>(""); //A: The ("") means the initial value of the SV is an empty string.
     const [statusMessages, setStatusMessages] = useState<StatusMessage[]>([]); //A: for general status messages (error or succes)
@@ -23,8 +23,8 @@ const CreateEventForm: React.FC = () => {
 
     //A: for the tickets:
     const [ticketAmount, setTicketAmount] = useState<number | null>(null);
-    const [ticketType, setTicketType] = useState<string[]>([]); //A: Array to store ticket types for each ticket => array cause u can have multiple tickets.
-    const [ticketPrice, setTicketPrice] = useState<number[]>([]);
+    const [ticketType, setTicketType] = useState<string>(); //A: Array to store ticket types for each ticket => array cause u can have multiple tickets.
+    const [ticketPrice, setTicketPrice] = useState<number>();//A: undefined als start.
 
     const clearErrors = () => {
         setErrorMessage("");
@@ -120,20 +120,6 @@ const CreateEventForm: React.FC = () => {
             ]);
         };
     }
-    //A: for the change in amount
-    const handleTicketTypeChange = (index: number, value: string) => {
-        const newTicketTypes = [...ticketType]; //A: Deze regel maakt een kopie van de ticketType array, omdat in react het niet echt een goed idee is om arrays direct te muteren.
-        newTicketTypes[index] = value; //A: als we bv 4 tickets( index = 4 ) hebben is het zoals dit: ticketType = ["", "", "", ""]; Lege waarden voor elk van de 4 tickets.
-        setTicketType(newTicketTypes);
-    };
-
-    const handleTicketPriceChange = (index: number, value: string) => {
-        const newTicketPrices = [...ticketPrice];
-        newTicketPrices[index] = parseFloat(value); // Update the price at the specific index
-        setTicketPrice(newTicketPrices);
-    };
-
-
 
     return (
         <>
@@ -218,13 +204,12 @@ const CreateEventForm: React.FC = () => {
 
                 <label htmlFor="ticketAmount">Ticket amount</label>
                 <select
+
                     name="ticketAmount"
                     id="ticketAmount"
                     value={ticketAmount || ""} //A: starts empty
                     onChange={(e) => {
-                        const amount = e.target.value ? parseInt(e.target.value) : 0;
-                        setTicketAmount(amount);
-                        setTicketType(Array(amount).fill('')); // Reset ticket types when ticket amount changes
+                        setTicketAmount(Number(e.target.value)); // Reset ticket types when ticket amount changes
                     }}
 
                 >
@@ -237,8 +222,8 @@ const CreateEventForm: React.FC = () => {
                     <option value="5">5</option>
                 </select>
 
-                {/*
-                < input
+
+                {/* < input
                     type="number"
                     name="ticketAmount"
                     min="0"
@@ -248,20 +233,20 @@ const CreateEventForm: React.FC = () => {
                     onChange={(e) => {
                         const amount = e.target.value ? parseInt(e.target.value) : 0;
                         setTicketAmount(amount);
-                        setTicketType(Array(amount).fill('')); // Reset ticket types when ticket amount changes
+                        // Reset ticket types when ticket amount changes
                     }}
                 /> */}
 
                 {/*A: Dit deel gaat er voor zorgen dat je het aantal keer van de tickets kan zien*/}
-                {ticketAmount && ticketAmount > 0 && [...Array(ticketAmount)].map((_, index) => ( //A: Dit betekent dat dit enkel wordt uitgevoerd als ticketamount groter is dan 0. => Dit maakt een array van lege items, waarvan het aantal gelijk is aan ticketAmount. Bijvoorbeeld, als ticketAmount = 3, maakt dit een array met drie lege items. => De map functie gaat door de array van lege items en maakt voor elk item (in dit geval, voor elke ticket) een nieuw HTML-element.
-                    <div key={index} className={styles.ticketPriceAndTypeStyling}>
-                        <div >
-                            <label htmlFor={`ticketType-${index}`}>Ticket type {index + 1}</label> {/*hier wordt de ticket type en dan het index nr dus als het het eerste is dan is het ticket type 1*/}
+                {ticketAmount && (
+                    // Zorg ervoor dat ticketAmount wordt gebruikt om een lege array te maken
+                    <div className={styles.ticketPriceAndTypeStyling}>
+                        <div>
+                            <label htmlFor={`ticketType`}>Ticket type</label>
                             <select
-                                name={`ticketType-${index}`}
-                                id={`ticketType-${index}`}
-                                value={ticketType[index] || ''}
-                                onChange={(e) => handleTicketTypeChange(index, e.target.value)}
+                                name={`ticketTypE`}
+                                id={`ticketType`}
+                                onChange={(e) => setTicketType(e.target.value)}
                             >
                                 <option value="" disabled hidden>No ticket selected</option>
                                 <option value="Normal">Normal</option>
@@ -269,18 +254,18 @@ const CreateEventForm: React.FC = () => {
                             </select>
                         </div>
                         <div>
-                            <label htmlFor={`ticketPrice-${index}`}>Ticket price {index + 1}</label>
+                            <label htmlFor={`ticketPrice`}>Ticket price </label>
                             <input
                                 type="number"
-                                id={`ticketPrice-${index}`}
-                                name={`ticketPrice-${index}`}
-                                placeholder={`Price for ticket ${index + 1}`}
-                                value={ticketPrice[index] || ''}
-                                onChange={(e) => handleTicketPriceChange(index, e.target.value)}
+                                id={`ticketPrice`}
+                                name={`ticketPrice`}
+                                placeholder={`Price for ticket`}
+                                onChange={(e) => setTicketPrice(Number(e.target.value))}
                             />
                         </div>
                     </div>
-                ))}
+                )}
+
 
 
                 {/* <label htmlFor="ticketType">Ticket type:</label>
