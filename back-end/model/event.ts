@@ -45,6 +45,12 @@ export class Event {
         if (!event.category) {
             throw new Error('Category cannot be empty');
         }
+        // if (!event.isTrending) {
+        //     throw new Error ('IsTrending must be a boolean.')
+        // }
+        if (typeof event.isTrending !== "boolean") {
+            throw new Error("IsTrending must be a boolean.");
+        }
 
         this.id = event.id;
         this.name = event.name;

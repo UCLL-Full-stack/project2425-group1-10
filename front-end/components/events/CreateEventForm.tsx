@@ -17,7 +17,7 @@ const CreateEventForm: React.FC = () => {
     const [isTrending, setIsTrending] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>(""); //A: The ("") means the initial value of the SV is an empty string.
     const [statusMessages, setStatusMessages] = useState<StatusMessage[]>([]); //A: for general status messages (error or succes)
-    
+
     //A: The first statusMessages will store the data. The <StatusMessage[]> indicates that it should be an array of objects of type statusMessage and it is findable in another part of the project. It starts empty but can be modified with the set... .
     const [showSuccessIcon, setShowSuccessIcon] = useState<boolean>(false);
 
@@ -155,7 +155,7 @@ const CreateEventForm: React.FC = () => {
                     <img src="/icons/check-green.png" alt="success" width="40px" height="40px" className={styles.eventSuccessIcon} />
                 )}
 
-                <label htmlFor="name">Event Name:</label>
+                <label htmlFor="name">Event Name</label>
                 <input
                     type="text"
                     id="name"
@@ -164,7 +164,7 @@ const CreateEventForm: React.FC = () => {
                     onChange={(e) => setName(e.target.value)}
                 />
 
-                <label htmlFor="description">Description:</label>
+                <label htmlFor="description">Description</label>
                 <textarea
                     id="description"
                     placeholder='example: This concert will give you the best songs of Taylor Swift.'
@@ -172,14 +172,14 @@ const CreateEventForm: React.FC = () => {
                     onChange={(e) => setDescription(e.target.value)}
                 />
 
-                <label htmlFor="date">Date:</label>
+                <label htmlFor="date">Date</label>
                 <input
                     type="date"
                     id="date"
                     onChange={(e) => setDate(new Date(e.target.value))}  //A: Converts input to Date object.
                 />
 
-                <label htmlFor="location">Location:</label>
+                <label htmlFor="location">Location</label>
                 <input
                     type="text"
                     id="location"
@@ -188,7 +188,7 @@ const CreateEventForm: React.FC = () => {
                     onChange={(e) => setLocation(e.target.value)}
                 />
 
-                <label htmlFor="category">Category:</label>
+                <label htmlFor="category">Category</label>
                 <input
                     type="text"
                     id="category"
@@ -197,7 +197,7 @@ const CreateEventForm: React.FC = () => {
                     onChange={(e) => setCategory(e.target.value)}
                 />
 
-                <label htmlFor="backgroundImage">Background Image URL:</label>
+                <label htmlFor="backgroundImage">Background Image URL</label>
                 <input
                     type="text"
                     id="backgroundImage"
@@ -206,7 +206,7 @@ const CreateEventForm: React.FC = () => {
                     onChange={(e) => setBackgroundImage(e.target.value)}
                 />
 
-                <label htmlFor="isTrending">Trending:</label>
+                <label htmlFor="isTrending">Trending</label>
                 <input
                     type="checkbox"
                     id="isTrending"
@@ -216,7 +216,7 @@ const CreateEventForm: React.FC = () => {
 
 
 
-                <label htmlFor="ticketAmount">Ticket amount:</label>
+                <label htmlFor="ticketAmount">Ticket amount</label>
                 <select
                     name="ticketAmount"
                     id="ticketAmount"
@@ -254,34 +254,34 @@ const CreateEventForm: React.FC = () => {
 
                 {/*A: Dit deel gaat er voor zorgen dat je het aantal keer van de tickets kan zien*/}
                 {ticketAmount && ticketAmount > 0 && [...Array(ticketAmount)].map((_, index) => ( //A: Dit betekent dat dit enkel wordt uitgevoerd als ticketamount groter is dan 0. => Dit maakt een array van lege items, waarvan het aantal gelijk is aan ticketAmount. Bijvoorbeeld, als ticketAmount = 3, maakt dit een array met drie lege items. => De map functie gaat door de array van lege items en maakt voor elk item (in dit geval, voor elke ticket) een nieuw HTML-element.
-                    <div key={index}>
-                        <label htmlFor={`ticketType-${index}`}>Ticket type {index + 1}:</label> {/*hier wordt de ticket type en dan het index nr dus als het het eerste is dan is het ticket type 1*/}
-                        <select
-                            name={`ticketType-${index}`}
-                            id={`ticketType-${index}`}
-                            value={ticketType[index] || ''}
-                            onChange={(e) => handleTicketTypeChange(index, e.target.value)}
-                        >
-                            <option value="" disabled hidden>No ticket selected</option>
-                            <option value="Normal">Normal</option>
-                            <option value="VIP">VIP</option>
-                        </select>
+                    <div key={index} className={styles.ticketPriceAndTypeStyling}>
+                        <div >
+                            <label htmlFor={`ticketType-${index}`}>Ticket type {index + 1}</label> {/*hier wordt de ticket type en dan het index nr dus als het het eerste is dan is het ticket type 1*/}
+                            <select
+                                name={`ticketType-${index}`}
+                                id={`ticketType-${index}`}
+                                value={ticketType[index] || ''}
+                                onChange={(e) => handleTicketTypeChange(index, e.target.value)}
+                            >
+                                <option value="" disabled hidden>No ticket selected</option>
+                                <option value="Normal">Normal</option>
+                                <option value="VIP">VIP</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label htmlFor={`ticketPrice-${index}`}>Ticket price {index + 1}</label>
+                            <input
+                                type="number"
+                                id={`ticketPrice-${index}`}
+                                name={`ticketPrice-${index}`}
+                                placeholder={`Price for ticket ${index + 1}`}
+                                value={ticketPrice[index] || ''}
+                                onChange={(e) => handleTicketPriceChange(index, e.target.value)}
+                            />
+                        </div>
                     </div>
                 ))}
 
-                {ticketAmount > 0 && [...Array(ticketAmount)].map((_, index) => (
-                    <div key={index}>
-                        <label htmlFor={`ticketPrice-${index}`}>Ticket price {index + 1}:</label>
-                        <input
-                            type="number"
-                            id={`ticketPrice-${index}`}
-                            name={`ticketPrice-${index}`}
-                            placeholder={`Price for ticket ${index + 1}`}
-                            value={ticketPrice[index] || ''}
-                            onChange={(e) => handleTicketPriceChange(index, e.target.value)}
-                        />
-                    </div>
-                ))}
 
                 {/* <label htmlFor="ticketType">Ticket type:</label>
                 <select

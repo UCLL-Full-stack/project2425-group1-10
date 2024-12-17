@@ -942,6 +942,15 @@
     box-sizing: border-box;
 }
 
+/*flexbox*/
+.ticketPriceAndTypeStyling {
+    display: flex;
+    flex-direction: row;
+    gap:1rem;
+}
+
+
+
 /* Buttons */
 .buttonGroup {
     display: flex;
