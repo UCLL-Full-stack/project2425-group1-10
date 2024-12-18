@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import EventService from "@services/EventService";
 import classNames from "classnames";
 import { stat } from "fs";
+import TicketService from "@services/TicketService";
 
 const CreateEventForm: React.FC = () => {
     const router = useRouter();
@@ -81,14 +82,19 @@ const CreateEventForm: React.FC = () => {
         clearErrors(); //A: This will clear all the errors before going further.
 
         const event = { name, description, date, location, category, backgroundImage, isTrending };
+        
+        const ticket = {type, cost, user, event:event.id};
         const response = await EventService.createEvent(event);
-
+        for(let i = 0; i < ticketAmount; i++){ //A: afhangend van de hoeveelheid tickets gaat het zoveel tickets creëeren
+            const response2 = await TicketService.createTicket(ticket);
+        }
 
         //A: To check if things are working correctly thus far:
         console.log(response.status);
 
         if (response.status === 200) {
             setShowSuccessIcon(true);
+        
 
             const event = await response.json();
             localStorage.setItem("createdEvent",
@@ -200,8 +206,6 @@ const CreateEventForm: React.FC = () => {
                     onChange={(e) => setIsTrending(e.target.checked)}
                 />
 
-
-
                 <label htmlFor="ticketAmount">Ticket amount</label>
                 <select
 
@@ -267,7 +271,6 @@ const CreateEventForm: React.FC = () => {
                 )}
 
 
-
                 {/* <label htmlFor="ticketType">Ticket type:</label>
                 <select
                     name= "ticketType"
@@ -281,7 +284,6 @@ const CreateEventForm: React.FC = () => {
                     <option value="VIP">VIP</option>
 
                 </select> */}
-
 
                 <div className={styles.myEventsLoginSignupButtons}>
                     <button
