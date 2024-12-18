@@ -23,6 +23,11 @@ export class User {
         age: number,
         role: Role,
     }) {
+
+        if (user.password.length < 8) {
+            throw new Error("Password must be at least 8 characters long.");
+        }
+
         this.id = user.id;
         this.username = user.username;
         this.name = user.name;

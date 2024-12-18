@@ -21,6 +21,17 @@ export class Ticket {
         user: User | null;
         event: Event;
     }) {
+        if (ticket.cost < 0) {
+            throw new Error('Cost must be a positive number.')
+        }
+        const validtypes: TicketType[] = ["VIP" , "REGULAR" , "STUDENT" , "FREE"];
+        if (!validtypes.includes(ticket.type)) {
+            throw new Error('Invalid ticket type.');
+        }
+        if (ticket.user === null || ticket.user === undefined) {
+            throw new Error('User must be provided.');
+        }
+        
         this.id = ticket.id;
         this.type = ticket.type;
         this.cost = ticket.cost;
