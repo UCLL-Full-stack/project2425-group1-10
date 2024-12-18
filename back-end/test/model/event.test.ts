@@ -188,6 +188,3 @@ test('Given: when isTrending is not a boolean, When: Event is made, Then: an err
 //     // Then
 //     expect(createEvent).toThrow('Event must have at least one user');
 // });
-
-
-

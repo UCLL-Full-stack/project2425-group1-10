@@ -74,4 +74,3 @@ test('Given: no user provided, when: ticket is created, then: error is thrown', 
     // Then:
     expect(createdTicket).toThrow('User must be provided.');
 });
-
