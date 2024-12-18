@@ -8,7 +8,11 @@ import userService from "./user.service";
 
 //Function to get all the events
 const getAllEvents = async (): Promise<Event[]> => {
-    return await eventDb.getAllEvents();
+    const event = await eventDb.getAllEvents();
+    if (event.length === 0) {
+        throw new Error('Must contain at least 1 event.')
+    }
+    return event;
 };
 
 //To get the events by their id:
@@ -16,6 +20,10 @@ const getEventById = async (id: number): Promise<Event> => {
     const event = await eventDb.getEventById(id);
     if (!event) {
         throw new Error('Event not found.');
+    }
+
+    if (!id || typeof id !== 'number' || id <= 0) {
+        throw new Error('Invalid ID provided. ID must be a positive number.');
     }
     return event;
 };
@@ -25,6 +33,11 @@ const getEventById = async (id: number): Promise<Event> => {
 // };
 
 const getEventsByUserEmail = async (email: string): Promise<Event[]> => {
+    //A: validate:
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+        throw new Error('Invalid email format.');
+    }
+
     const tickets = await ticketDb.getTicketsByUserEmail(email);
     const events = tickets.map((ticket) => ticket.event);
 
@@ -32,11 +45,22 @@ const getEventsByUserEmail = async (email: string): Promise<Event[]> => {
 };
 
 
+
 // const removeEvent = async (email: string, eventId: number) => {
 //     return await eventDb.removeFromMyEvents(email, eventId);
 // };
 
 const createEvent = async (event: EventInput): Promise<Event> => {
+    if (!event.name || !event.description || !event.date || !event.location) {
+        throw new Error('Missing required fields');
+    }
+
+    if (new Date(event.date) < new Date()) {
+        throw new Error('Event date cannot be in the past.');
+    }
+
+
+
     return await eventDb.createEvent(event);
 }
 
@@ -49,5 +73,5 @@ export default {
     // getEventsByParticipantEmail,
     getEventsByUserEmail,
     // removeEvent,
-    
+
 };

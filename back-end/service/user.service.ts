@@ -1,3 +1,4 @@
+import useSWR from "swr";
 import { User } from "../model/user";
 import userDb from "../repository/user.db"
 import { AuthenticationResponse, Role, UserInput } from "../types";
@@ -5,12 +6,16 @@ import bcrypt, { hash } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 const getAllUsers = async (): Promise<User[]> => {
-    return userDb.getAllUsers();
+    const user = await userDb.getAllUsers();
+    if (user.length === 0) {
+        throw new Error('Must contain at least 1 user.')
+    }
+    return user;
 };
 
 const getUserById = async (id: number): Promise<User | null> => {
     const user = await userDb.getUserById({ id });
-
+    
     //A: validation can be checked in service:
     if (user === null) {
         throw new Error("User doesn't exist.");
@@ -26,11 +31,19 @@ const getUserByEmail = async (email: string): Promise<User> => {
         throw new Error("User does not exist.");
     }
 
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+        throw new Error('Invalid email format.');
+    }
+
     return user;
 };
 
 const createUser = async (user: UserInput): Promise<User> => {
     const userExisted = await userDb.getUserByEmail(user.email);
+
+    if (!user.username || !user.name || !user.email || !user.password || !user.age || !user.role) {
+        throw new Error('Missing required fields.');
+    }
 
     if (userExisted !== null){
         throw new Error("User already exists.");
