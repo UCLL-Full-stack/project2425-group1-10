@@ -1,4 +1,4 @@
-import { InviteStatus } from "../types";
+import { InviteStatus, UserInput } from "../types";
 import {
     User as UserPrisma,
     Event as EventPrisma,
@@ -11,20 +11,21 @@ import { Event } from './event';
 export class Invite {
     private id?: number;
     private status: InviteStatus;
-    private user: User;
+    private users: User[];
     private event: Event;
 
     constructor(invite: {
         id?: number;
         status: InviteStatus;
-        user: User;
+        users: User[];
         event: Event;
     }) {
         this.id = invite.id;
         this.status = invite.status;
-        this.user = invite.user;
+        this.users = invite.users;
         this.event = invite.event;
     }
+
 
     getId(): number | undefined {
         return this.id;
@@ -34,8 +35,8 @@ export class Invite {
         return this.status;
     }
 
-    getUser(): User {
-        return this.user;
+    getUsers(): User[] {
+        return this.users;
     }
 
     getEvent(): Event {
@@ -45,23 +46,23 @@ export class Invite {
     equals(invite: Invite): boolean {
         return (
             this.status === invite.getStatus() &&
-            this.user === invite.getUser() 
+            this.users === invite.getUsers() 
         )
     }
 
     static from({
         id,
         status,
-        user,
+        users,
         event,
     }: InvitePrisma & {
-        user: UserPrisma,
+        users: UserPrisma[],
         event: EventPrisma,
     }) {
         return new Invite({
             id,
             status: status as InviteStatus,
-            user: User.from(user),
+            users: users.map((user) => User.from(user)),
             event: Event.from(event),
         });
     }

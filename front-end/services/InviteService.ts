@@ -24,7 +24,7 @@ const getInvitesByEventId = async (eventId: string) => {
     });
 };
 
-const createInvite = async (email: string, eventId: string) => {
+const createInvite = async (emails: string[], eventId: string) => {
     const token = JSON.parse(localStorage.getItem("loggedInUser"))?.token;
 
     return fetch(apiUrl + '/invites', {
@@ -33,7 +33,7 @@ const createInvite = async (email: string, eventId: string) => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({email, eventId}),
+        body: JSON.stringify({emails, eventId}),
     });
 };
 

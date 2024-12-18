@@ -6,13 +6,13 @@ import {
 } from '@prisma/client';
 
 export class User {
-    private id?: number;
-    private username: string;
-    private name: string;
-    private email: string;
-    private password: string;
-    private age: number;
-    private role: Role;
+    readonly id?: number;
+    readonly username: string;
+    readonly name: string;
+    readonly email: string;
+    readonly password: string;
+    readonly age: number;
+    readonly role: Role;
 
     constructor(user: {
         id?: number,

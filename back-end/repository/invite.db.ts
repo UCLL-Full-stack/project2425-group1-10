@@ -5,7 +5,7 @@ import database from './database';
 const getAll = async (): Promise<Invite[]> => {
     const invitesPrisma = await database.invite.findMany({
         include: {
-            user: true,
+            users: true,
             event: true,
         },
     });
@@ -16,8 +16,10 @@ const getAll = async (): Promise<Invite[]> => {
 const checkInviteExisted = async (userEmail: string, eventId: string): Promise<boolean> => {
     const invitesPrisma = await database.invite.findMany({
         where: {
-            user: {
-                email: userEmail,
+            users: {
+                some: {
+                    email: userEmail,
+                },
             },
             event: {
                 id: parseInt(eventId),
@@ -37,10 +39,8 @@ const createInvite = async (invite: Invite): Promise<Invite> => {
     const invitePrisma = await database.invite.create({
         data: {
             status: 'PENDING',
-            user: {
-                connect: {
-                    id: invite.getUser().getId(),
-                },
+            users: {
+                connect: invite.getUsers().map(user => ({ id: user.getId() })),
             },
             event: {
                 connect: {
@@ -49,7 +49,7 @@ const createInvite = async (invite: Invite): Promise<Invite> => {
             },
         },
         include: {
-            user: true,
+            users: true,
             event: true,
         },
     });
@@ -63,7 +63,7 @@ const getInvitesByEventId = async (eventId: string): Promise<Invite[]> => {
             eventId: Number(eventId),
         },
         include: {
-            user: true,
+            users: true,
             event: true,
         },
     });
@@ -84,10 +84,14 @@ const getInvitesByUserEmail = async (email: string): Promise<Invite[]> => {
 
     const invitesPrisma = await database.invite.findMany({
         where: {
-            userId: userPrisma.id,
+            users: {
+                some: {
+                    id: userPrisma.id,
+                }
+            }
         },
         include: {
-            user: true,
+            users: true,
             event: true,
         },
     });
@@ -104,7 +108,7 @@ const changeInviteStatus = async (inviteId: string, statusData: string): Promise
             status: statusData,
         },
         include: {
-            user: true,
+            users: true,
             event: true,
         },
     });

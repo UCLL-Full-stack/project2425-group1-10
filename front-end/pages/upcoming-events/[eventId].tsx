@@ -15,7 +15,7 @@ const RenderEventDetailsById: React.FC = () => {
     const [event, setEvent] = useState<EventInput>();
     const [showForm, setShowForm] = useState(false);
     const [showInviteButton, setShowInviteButton] = useState(false);
-    const [email, setEmail] = useState("");
+    const [emails, setEmails] = useState([""]);
     const [invites, setInvites] = useState<InviteInput[]>();
 
     // Show error message
@@ -93,12 +93,22 @@ const RenderEventDetailsById: React.FC = () => {
         }
     };
 
-    const createInvite = async (email: string, eventId: string) => {
-        setEmail("");
+    const addExtraEmail = () => {
+        setEmails([...emails, ""]);
+    };
+
+    const handleEmailInput = (index: number, value: string) => {
+        const newEmails = [...emails];
+        newEmails[index] = value;
+        setEmails(newEmails);
+    };
+
+    const createInvite = async (emails: string[], eventId: string) => {
+
         setShowInviteErrorMessage(false);
 
         try {
-            const response = await InviteService.createInvite(email, eventId);
+            const response = await InviteService.createInvite(emails, eventId);
 
             if (!response.ok) {
                 const responseData = await response.json();
@@ -107,6 +117,8 @@ const RenderEventDetailsById: React.FC = () => {
             } else {
                 getInvitesByEventId(eventId);
             }
+
+            setEmails([""]);
 
         } catch (error) {
             setInviteErrorMessage(error.message);
@@ -170,20 +182,38 @@ const RenderEventDetailsById: React.FC = () => {
                                 <label
                                     htmlFor="email"
                                 >
-                                    Invite a user to this event
+                                    Invite user(s) to this event
                                 </label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
+                                <div className={styles.inviteFormAddEmailHolder}>
+                                    <div className={styles.inviteFormEmailInputs}>
+                                        {emails.map((email, index) => (
+                                            <div key={index} className={styles.inviteFormAddEmail}>
+                                                <input
+                                                    type="email"
+                                                    id="email"
+                                                    name="email"
+                                                    value={email}
+                                                    onChange={(e) => handleEmailInput(index, e.target.value)}
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={addExtraEmail}
+                                        className={styles.inviteFormAddEmailButton}
+                                    >
+                                        <img
+                                            src="/icons/add.png"
+                                            alt="adding-icon"
+                                            width="40px"
+                                            height="40px" />
+                                    </button>
+                                </div>
                                 <button
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        // Implement the invite functionality
-                                        createInvite(email, eventId as string);
+                                        createInvite(emails, eventId as string);
                                     }}
                                     type="submit"
                                     className="px-4 py-2 bg-grey-500 rounded"

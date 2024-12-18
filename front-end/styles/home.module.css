@@ -279,6 +279,32 @@
     border-radius: 4px;
 }
 
+.inviteFormAddEmailHolder {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    gap: 1rem;
+}
+
+.inviteFormEmailInputs {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.inviteFormAddEmail {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.inviteFormAddEmailButton {
+    background-color: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+}
+
 .upcomingEventsMain h1 {
     margin-top: 3rem;
     text-align: center;

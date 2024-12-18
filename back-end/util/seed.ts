@@ -7,9 +7,10 @@ const prisma = new PrismaClient();
 
 
 const main = async () => {
+    await prisma.event.deleteMany();
     await prisma.ticket.deleteMany();
     await prisma.user.deleteMany();
-    await prisma.event.deleteMany();
+    await prisma.invite.deleteMany();
 
     const admin = await prisma.user.create({
         data: {

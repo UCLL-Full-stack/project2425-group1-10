@@ -15,9 +15,9 @@ inviteRouter.get('/', async (req: Request, res: Response, next: NextFunction) =>
 // Create an invitation
 inviteRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userEmail = req.body.email;
+        const userEmails = req.body.emails;
         const eventId = req.body.eventId;
-        const invite = await inviteService.createInvite(userEmail, eventId);
+        const invite = await inviteService.createInvite(userEmails, eventId);
         res.status(200).json(invite);
     } catch (error) {
         if (error instanceof Error) {

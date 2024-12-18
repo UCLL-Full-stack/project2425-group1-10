@@ -61,7 +61,7 @@ const Header: React.FC = () => {
 
                 {loggedUser && loggedUser.role !== 'ADMIN' && (
                     <Link href="/my-invites" className={`nav-link px-4 fs-5 ${isActive('/my-invites') ? 'text-white' : 'text-white-50'}`}>
-                        {t("header.myInvites")} {invites && (
+                        {t("header.myInvites")} {invites && invites.length > 0 && (
                             <span className="badge bg-danger">{invites.filter(invite => invite.status === 'PENDING').length}</span>
                         )}
                     </Link>
@@ -79,7 +79,7 @@ const Header: React.FC = () => {
 
                 {loggedUser && loggedUser.role !== 'ADMIN' && (
                     <Link href="/my-events" className={`nav-link px-4 fs-5 ${isActive('/my-events') ? 'text-white' : 'text-white-50'}`}>
-                        {t("header.myEvents")} {tickets && invites && (
+                        {t("header.myEvents")} {tickets && tickets.length > 0 && invites && invites.length > 0 && (
                             <span className="badge bg-danger">{tickets.length + invites.filter(invite => invite.status === 'ACCEPT').length}</span>
                         )}
                     </Link>
