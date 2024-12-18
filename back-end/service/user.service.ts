@@ -9,7 +9,14 @@ const getAllUsers = async (): Promise<User[]> => {
 };
 
 const getUserById = async (id: number): Promise<User | null> => {
-    return userDb.getUserById({ id });
+    const user = await userDb.getUserById({ id });
+
+    //A: validation can be checked in service:
+    if (user === null) {
+        throw new Error("User doesn't exist.");
+    }
+
+    return user;
 };
 
 const getUserByEmail = async (email: string): Promise<User> => {
