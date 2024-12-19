@@ -113,7 +113,7 @@ test('Given: a need to get all the events, When: getAllEvents is called, Then: a
 });
 
 //unhappy:
-test('Given: no events in the database, When: getAllEvents is called, Then an error is thrown.', async () => {
+test('Given: no events in the database, When: getAllEvents is called, Then: an error is thrown.', async () => {
     //Given:
     eventDb.getAllEvents = mockEventDbGetAllEvents.mockResolvedValue([]);
 

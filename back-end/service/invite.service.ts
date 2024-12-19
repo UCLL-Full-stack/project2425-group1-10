@@ -4,8 +4,12 @@ import eventDb from "../repository/event.db";
 import { Invite } from "../model/invite";
 
 const getAll = async (): Promise<Invite[]> => {
-    const invites = await inviteDb.getAll();
-    return invites;
+    const invite = await inviteDb.getAll();
+
+    if (invite.length === 0 ) {
+        throw new Error('Must contain at least 1 invite.')
+    }
+    return invite;
 };
 
 const createInvite = async (userEmail: string, eventId: string): Promise<Invite> => {
