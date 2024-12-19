@@ -29,7 +29,7 @@ test('Given: valid values for user, when: user is created, then: user is created
         password,
         age,
         role: 'participant' as Role,
-        events:[],
+        events: [],
     });
 
     // When
@@ -53,7 +53,7 @@ test('Given: users with the same username but different details, when: compared,
         password,
         age: 30,
         role: 'participant' as Role, // Corrected enum access
-        events:[],
+        events: [],
     });
 
     const user2 = new User({
@@ -63,7 +63,7 @@ test('Given: users with the same username but different details, when: compared,
         password,
         age,
         role: 'participant' as Role, // Corrected enum access
-        events:[],
+        events: [],
     });
 
     // When
@@ -86,9 +86,104 @@ test('Given: a password shorter than 8 characters, when: wanting to create a use
         password: shortPassword,
         age,
         role: 'participant' as Role,
-        events:[],
+        events: [],
     });
 
     // Then
     expect(createUser).toThrow("Password must be at least 8 characters long.");
 });
+
+//invalid name => if they are empty
+test('Given: an invalid name, When: wanting to receive name, then: an error is thrown', () => {
+    //Given:
+    const invalidName = ''
+
+    //When:
+    const createUser = () => new User({
+        username,
+        name: invalidName,
+        email,
+        password,
+        age,
+        role: 'participant' as Role,
+        events: [],
+    });
+
+    //Then:
+    expect((createUser)).toThrow('Name can not be empty.')
+});
+
+//invalid username =>  if they are empty
+test('Given: an invalid username, When: wanting to make user, then: an error is thrown', () => {
+    //Given:
+    const invalidUserName = ''
+
+    //When:
+    const createUser = () => new User({
+        name,
+        username: invalidUserName,
+        email,
+        password,
+        age,
+        role: 'participant' as Role,
+        events: [],
+    });
+
+    //Then:
+    expect((createUser)).toThrow('Username can not be empty.')
+});
+
+
+//invalid email => dont follow format
+test('Given: an invalid email format, when wanting to create user, then: an error is thrown.', () => {
+    //Given:
+    const invalidemail = 'This_is_an_invalid_email_format';
+
+    //When:
+    const createUser = () => new User({
+        name: 'Test User',
+        username: 'testuser',
+        email: invalidemail,
+        password: 'securepassword123',
+        age: 25,
+        role: 'participant' as Role,
+        events: [],
+    })
+    expect(createUser).toThrow('Email must be in a valid format.');
+
+})
+
+
+//invalid age =>  between 18-101
+test('Given: an age outside the range of 18-101, When: wanting to create a user, Then: an error is thrown', () => {
+    // Given: wrong ages
+    const tooYoung = 17;
+    const tooOld = 102;
+
+    // When:
+    const createTooYoungUser = () => new User({
+        username: "youngUser",
+        name: "Young User",
+        email: "younguser@example.com",
+        password: "Password123",
+        age: tooYoung,
+        role: 'participant' as Role,
+        events: [],
+    });
+
+    const createTooOldUser = () => new User({
+        username: "oldUser",
+        name: "Old User",
+        email: "olduser@example.com",
+        password: "Password123",
+        age: tooOld,
+        role: 'participant' as Role,
+        events: [],
+    });
+
+    // Then:
+    expect(createTooYoungUser).toThrow("Age needs to be between 18 and 101.");
+    expect(createTooOldUser).toThrow("Age needs to be between 18 and 101.");
+});
+
+
