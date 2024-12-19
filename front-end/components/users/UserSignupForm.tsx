@@ -2,7 +2,7 @@ import UserService from '@services/UserService';
 import styles from '@styles/home.module.css';
 import { useRouter } from 'next/router';
 import { use, useState } from 'react';
-import {Role} from 'types';
+import { Role } from 'types';
 
 const UserSignupForm: React.FC = () => {
     const [username, setUsername] = useState('');
@@ -11,14 +11,12 @@ const UserSignupForm: React.FC = () => {
     const [role, setRole] = useState<Role>('PARTICIPANT');
     const [password, setPassword] = useState('');
     const [age, setAge] = useState('');
-    
     const [usernameError, setUsernameError] = useState('');
     const [nameError, setNameError] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [ageError, setAgeError] = useState('');
     const [roleError, setRoleError] = useState('');
-
     const [statusMessage, setStatusMessage] = useState<string>("");
     const [showStatus, setShowStatus] = useState(false);
 
@@ -68,7 +66,7 @@ const UserSignupForm: React.FC = () => {
     const handleSignupSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (validateForm()){
+        if (validateForm()) {
 
             const response = await UserService.createUser({
                 username,
@@ -79,12 +77,10 @@ const UserSignupForm: React.FC = () => {
                 role,
             });
 
-            console.log(response);
-    
             if (response.ok) {
                 setStatusMessage('User created successfully! Redirecting...');
                 setShowStatus(true);
-    
+
                 setTimeout(() => {
                     router.push('/');
                 }, 2000);
@@ -146,7 +142,9 @@ const UserSignupForm: React.FC = () => {
                 <select
                     name="age"
                     id="age"
-                    onChange={(e) => setAge(e.target.value)}
+                    onChange={(e) => {
+                        setAge(e.target.value)
+                    }}
                 >
                     <option value="">Select your age</option>
                     {Array.from({ length: 83 }, (_, i) => i + 18).map(age => (

@@ -29,7 +29,7 @@ export class Invite {
             throw new Error("Invalid event provided.");
         }
 
-        const validStatuses: InviteStatus[] = ['PENDING', 'CONFIRMED', 'DECLINED'];
+        const validStatuses: InviteStatus[] = ['PENDING', 'ACCEPT', 'DECLINE'];
         if (!validStatuses.includes(invite.status)) {
             throw new Error('Invalid status provided.');
         }
@@ -69,7 +69,7 @@ export class Invite {
         user,
         event,
     }: InvitePrisma & {
-        user: UserPrisma,
+        user: UserPrisma & {events: EventPrisma[]},
         event: EventPrisma,
     }) {
         return new Invite({

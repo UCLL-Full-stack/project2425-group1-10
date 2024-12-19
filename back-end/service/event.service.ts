@@ -45,23 +45,15 @@ const getEventsByUserEmail = async (email: string): Promise<Event[]> => {
 };
 
 
-
-// const removeEvent = async (email: string, eventId: number) => {
-//     return await eventDb.removeFromMyEvents(email, eventId);
-// };
-
-const createEvent = async (event: EventInput): Promise<Event> => {
-    if (!event.name || !event.description || !event.date || !event.location) {
-        throw new Error('Missing required fields');
+const createEvent = async (eventData: Event): Promise<Event> => {
+    if (!eventData.getName() || !eventData.getDescription() || !eventData.getDate() || !eventData.getLocation()) {
+        throw new Error('Missing required fields.');
     }
 
-    if (new Date(event.date) < new Date()) {
+    if (new Date(eventData.getDate()) < new Date()) {
         throw new Error('Event date cannot be in the past.');
     }
-
-
-
-    return await eventDb.createEvent(event);
+    return await eventDb.createEvent(eventData);
 }
 
 
@@ -73,5 +65,5 @@ export default {
     // getEventsByParticipantEmail,
     getEventsByUserEmail,
     // removeEvent,
-
+    // createEvent,
 };

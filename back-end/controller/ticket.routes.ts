@@ -52,4 +52,14 @@ ticketRouter.put('/:ticketId/user', async (req: Request, res: Response, next: Ne
     }
 })
 
+ticketRouter.post('/create', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { type, cost, event } = req.body;
+        const ticket = await ticketService.createTicket(type, cost, event);
+        res.status(200).json(ticket);
+    } catch (error) {
+        next(error);
+    }
+});
+
 export { ticketRouter };

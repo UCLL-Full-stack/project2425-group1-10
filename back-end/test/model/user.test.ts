@@ -28,7 +28,8 @@ test('Given: valid values for user, when: user is created, then: user is created
         email,
         password,
         age,
-        role: 'participant' as Role
+        role: 'participant' as Role,
+        events:[],
     });
 
     // When
@@ -51,7 +52,8 @@ test('Given: users with the same username but different details, when: compared,
         email: "differentemail@ucll.be",
         password,
         age: 30,
-        role: 'participant' as Role // Corrected enum access
+        role: 'participant' as Role, // Corrected enum access
+        events:[],
     });
 
     const user2 = new User({
@@ -60,7 +62,8 @@ test('Given: users with the same username but different details, when: compared,
         email,
         password,
         age,
-        role: 'participant' as Role // Corrected enum access
+        role: 'participant' as Role, // Corrected enum access
+        events:[],
     });
 
     // When
@@ -82,7 +85,8 @@ test('Given: a password shorter than 8 characters, when: wanting to create a use
         email,
         password: shortPassword,
         age,
-        role: 'participant' as Role
+        role: 'participant' as Role,
+        events:[],
     });
 
     // Then

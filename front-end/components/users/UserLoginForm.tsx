@@ -47,8 +47,6 @@ const UserLoginForm: React.FC = () => {
         const user = { email: email, password: password };
         const response = await UserService.loginUser(user);
 
-        console.log(response.status);
-
         if (response.status === 200) {
             setShowSuccessIcon(true);
 
@@ -68,9 +66,7 @@ const UserLoginForm: React.FC = () => {
             }, 2000);
 
         } else if (response.status === 401) {
-            // console.log(response);
             const responseBody = await response.json();
-            // console.log(responseBody);
 
             setStatusMessages([{ message: responseBody.message, type: 'error' }]);
 

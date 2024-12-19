@@ -14,6 +14,7 @@ const user = new User({
     password: 'johnd123',
     age: 19,
     role: 'participant' as Role,
+    events: []
 });
 
 const event = {

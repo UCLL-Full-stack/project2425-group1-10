@@ -1,36 +1,25 @@
-import Header from "@components/header"
-import UserOverview from "@components/users/UserOverview"
-import EventService from "@services/EventService"
-import UserService from "@services/UserService"
-import Head from "next/head"
-import { useEffect, useState } from "react"
-import { UserInput } from "types"
+import Header from "@components/header";
+import UserOverview from "@components/users/UserOverview";
+import Head from "next/head";
+import { useState } from "react";
 import styles from '@styles/home.module.css';
+import useSWR from 'swr';
+import UserService from "@services/UserService";
+
+const fetcher = (url: string) => UserService.getAll().then(res => res.json());
 
 const Users: React.FC = () => {
-    const [showUserList, setShowUserList] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
-    const [users, setUsers] = useState<UserInput[]>();
 
-    useEffect(() => {
-        const loggedInUser = localStorage.getItem('loggedInUser');
-        const user = loggedInUser ? JSON.parse(loggedInUser) : null;
+    const loggedInUser = localStorage.getItem('loggedInUser');
+    const user = loggedInUser ? JSON.parse(loggedInUser) : null;
 
-        if (user && user.role === 'ADMIN') {
-            getAll();
-            setShowUserList(true);
-        } else {
-            setErrorMessage("You are not authorised to see this page.");
-            setShowErrorMessage(true);
-        }
+    const { data: users, error } = useSWR(user && user.role === 'ADMIN' ? '/api/users' : null, fetcher);
 
-    }, []);
-
-    const getAll = async () => {
-        const response = await UserService.getAll();
-        const usersData = await response.json();
-        setUsers(usersData);
+    if (error) {
+        setErrorMessage("Failed to load users.");
+        setShowErrorMessage(true);
     }
 
     return (
@@ -43,18 +32,27 @@ const Users: React.FC = () => {
             </Head>
             <Header />
             <main className={styles.usersMain}>
-                {showUserList &&
-                    <UserOverview usersData={users} />
-                }
+                {users && <UserOverview usersData={users} />}
 
-                {showErrorMessage &&
+                {showErrorMessage && (
                     <p className="mt-3">
                         {errorMessage}
                     </p>
-                }
-            </main >
+                )}
+            </main>
         </>
-    )
+    );
+};
+
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+export const getServerSideProps = async (context) => {
+    const { locale } = context;
+
+    return {
+        props: {
+            ...(await serverSideTranslations(locale ?? "en", ["common"])),
+        },
+    };
 };
 
 export default Users;

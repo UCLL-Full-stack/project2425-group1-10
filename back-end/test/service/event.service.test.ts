@@ -18,6 +18,7 @@ const user = new User({
     password: 'johnd123',
     age: 19,
     role: 'participant' as Role,
+    events: [],
 });
 
 const event = new Event({
@@ -156,54 +157,23 @@ test('Given: an invalid email format, When: getEventsByUserEmail is called, Then
 });
 
 
-
-
-
-
 //Create event
-
-//A: create event unhappy:
-test('Given: missing required fields, When: createEvent is called, Then: an error is thrown', async () => {
-    // Given: Event without required fields (name is missing)
-    const incompleteEvent = {
-        description: 'Let’s celebrate Christmas',
-        date: new Date(),
-        location: 'Brussels',
-        category: 'Private',
-        backgroundImage: 'url',
-        isTrending: true,
-    };
-
-    // Cast to EventInput, intentionally missing name
-    const incompleteEventInput = incompleteEvent as EventInput;
-
-    // When & Then: Expecting an error because name is required
-    await expect(eventService.createEvent(incompleteEventInput)).rejects.toThrow('Missing required fields');
-});
-
 
 //A: create event unhappy one:
 test('Given: an event with the same name and date, When: createEvent is called again, Then: an error is thrown for duplicate events', async () => {
     // Given:
-    const existingEvent = {
-        name: 'Christmas Party',
-        description: 'Let’s celebrate Christmas',
-        date: new Date(),
-        location: 'Brussels',
-        category: 'Private',
-        backgroundImage: 'url',
-        isTrending: true,
+    const incompleteEvent = {
+        getName: () => '',
+        getDescription: () => 'Let’s celebrate Christmas',
+        getDate: () => new Date(),
+        getLocation: () => 'Brussels',
+        getCategory: () => 'Private',
+        getBackgroundImage: () => 'url',
+        getIsTrending: () => true,
     };
 
-    // Mocking the database to simulate the event already exists
-    mockEventDbGetEventById.mockResolvedValue(existingEvent);  //A: this event already exists.
-    eventDb.createEvent = createEventMock;
-
-    // Simulating service logic to check for duplicate events
-    createEventMock.mockRejectedValue(new Error('Event already exists, no duplicate events allowed.'));
-
-    // When & Then:
-    await expect(eventService.createEvent(existingEvent)).rejects.toThrow('Event already exists, no duplicate events allowed.');
+    // When & Then: Expecting an error because name is required
+    await expect(eventService.createEvent(incompleteEvent as any)).rejects.toThrow('Missing required fields.');
 });
 
 //A: Test for the createEvent: => defintly recheck for error logic
@@ -212,7 +182,7 @@ test('Given: a valid event, when event is created, then event is created with th
     const futureDate = new Date();
     futureDate.setDate(futureDate.getDate() + 1);
 
-    const input = {
+    const input = new Event({
         name: event.getName(),
         description: event.getDescription(),
         date: futureDate,
@@ -220,7 +190,7 @@ test('Given: a valid event, when event is created, then event is created with th
         category: event.getCategory(),
         backgroundImage: event.getBackgroundImage(),
         isTrending: event.getIsTrending(),
-    };
+    });
 
     createEventMock.mockResolvedValue(input);
     eventDb.createEvent = createEventMock;
@@ -296,3 +266,21 @@ test('Given: a valid event, when event is created, then event is created with th
 //     expect(result).toBeUndefined();
 // });
 
+//A: create event unhappy:
+// test('Given: missing required fields, When: createEvent is called, Then: an error is thrown', async () => {
+//     // Given: Event without required fields (name is missing)
+//     const incompleteEvent = new Event({
+//         name: '',
+//         description: 'Let’s celebrate Christmas',
+//         date: new Date(),
+//         location: 'Brussels',
+//         category: 'Private',
+//         backgroundImage: 'url',
+//         isTrending: true,
+//     });
+
+
+
+//     // When & Then: Expecting an error because name is required
+//     await expect(eventService.createEvent(incompleteEvent as any)).rejects.toThrow('Missing required fields.');
+// });

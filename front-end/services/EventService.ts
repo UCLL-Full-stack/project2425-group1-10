@@ -70,6 +70,19 @@ const removeFromMyEvents = async (email: string, eventId: number) => {
   });
 };
 
+const createEvent = async (eventData: EventInput) => {
+  const token = JSON.parse(localStorage.getItem("loggedInUser"))?.token;
+
+  return fetch(apiUrl + "/events/create", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(eventData),
+  });
+};
+
 
 
 const createEvent = async (event: EventInput) => {

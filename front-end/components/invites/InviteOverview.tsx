@@ -22,8 +22,10 @@ const InviteOverview: React.FC<Props> = ({ invites, showEventName, showUserName,
     useEffect(() => {
 
         // [...invites] creates a new array that contains all the elements of the invites array.
-        const sortedInvites = [...invites].sort((a, b) => a.event.name.localeCompare(b.event.name));
-        setInvitesData(sortedInvites);
+        if (invites && invites.length > 0) {
+            const sortedInvites = [...invites].sort((a, b) => a.event.name.localeCompare(b.event.name));
+            setInvitesData(sortedInvites);
+        }
     }, [invites]);
 
     const showEventDetail = async (eventId: number) => {
@@ -75,7 +77,7 @@ const InviteOverview: React.FC<Props> = ({ invites, showEventName, showUserName,
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "users_list.csv");
+        link.setAttribute("download", "invites_list.csv");
         document.body.appendChild(link); // Required for FF
 
         link.click();

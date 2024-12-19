@@ -14,6 +14,7 @@ import InviteService from "@services/InviteService";
 const MyEvents: React.FC = () => {
     const router = useRouter();
     const [myEvents, setMyEvents] = useState<Array<Event>>();
+    const [myFavoriteEvents, setMyFavoriteEvents] = useState<Array<Event>>();
     const [loggedUser, setLoggedUser] = useState<UserInput | null>(null);
     const [tickets, setTickets] = useState<Array<TicketInput>>();
 
@@ -28,6 +29,7 @@ const MyEvents: React.FC = () => {
         if (loggedUser?.email) {
             getEventsByUserEmail(loggedUser.email);
             getInvitesByUserEmail(loggedUser.email);
+            getFavoriteEventsByUserEmail(loggedUser.email);
         }
     }, [loggedUser]);
 
@@ -43,6 +45,18 @@ const MyEvents: React.FC = () => {
         const acceptedInvites = invitesData.filter(invite => invite.status === 'ACCEPT');
         const eventsData = acceptedInvites.map(invite => invite.event);
         setMyEvents(eventsData);
+    }
+
+    const getFavoriteEventsByUserEmail = async (email: string) => {
+        const response = await UserService.getFavoriteEventsByUserEmail(email);
+
+        console.log(response);
+
+        const favoriteEventsData = await response.json();
+
+        console.log(favoriteEventsData);
+
+        setMyFavoriteEvents(favoriteEventsData);
     }
 
     return (
@@ -72,12 +86,33 @@ const MyEvents: React.FC = () => {
                     myEvents.length > 0 && (
                         <section className={styles.myEvents}>
                             <h1>My Invites</h1>
-                            <EventOverview events={myEvents} showDeleteButton={false} email={loggedUser.email} />
+                            <EventOverview events={myEvents} showDeleteButton={false} showLikeButton={false} email={loggedUser.email} />
                         </section>
-                    ))}
+                    ))
+                }
+                {myFavoriteEvents && (
+                    myFavoriteEvents.length > 0 && (
+                        <section className={styles.myEvents}>
+                            <h1>My Favorites</h1>
+                            <EventOverview events={myFavoriteEvents} showDeleteButton={false} showLikeButton={false} email={loggedUser.email} />
+                        </section>
+                    ))
+                }
             </main>
         </>
     )
+};
+
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import UserService from "@services/UserService";
+export const getServerSideProps = async (context) => {
+    const { locale } = context;
+
+    return {
+        props: {
+            ...(await serverSideTranslations(locale ?? "en", ["common"])),
+        },
+    };
 };
 
 export default MyEvents;

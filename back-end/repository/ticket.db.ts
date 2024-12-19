@@ -1,11 +1,14 @@
 import { Ticket } from '../model/ticket';
+import { User } from '../model/user';
+import { Event } from '../model/event';
+import { EventInput } from '../types';
 // import prisma from '../repository/database';
 import database from './database';
 
 const getAllTickets = async (): Promise<Ticket[]> => {
     const ticketsPrisma = await database.ticket.findMany({
         include: {
-            user: true,
+            user: {include: {events: true}},
             event: true,
         },
     });
@@ -20,7 +23,7 @@ const getTicketsByEventId = async (eventId: number): Promise<Ticket[]> => {
             },
         },
         include: {
-            user: true,
+            user: {include: {events: true}},
             event: true,
         },
     });
@@ -40,7 +43,7 @@ const userBuyTicket = async (ticketId: number, email: string) => {
             },
         },
         include: {
-            user: true,
+            user: {include: {events: true}},
             event: true,
         },
     });
@@ -56,7 +59,7 @@ const getTicketsByUserEmail = async (email: string): Promise<Ticket[]> => {
             }
         },
         include: {
-            user: true,
+            user: {include: {events: true}},
             event: true,
         }
     })
@@ -77,7 +80,7 @@ const removeUserFromTicket = async (ticketId: string) => {
             },
         },
         include: {
-            user: true,
+            user: {include: {events: true}},
             event: true,
         },
     })
@@ -85,10 +88,32 @@ const removeUserFromTicket = async (ticketId: string) => {
     return Ticket.from(ticketPrisma);
 }
 
+const createTicket = async (type: string, cost: number, event: EventInput) => {
+    const ticketPrisma = await database.ticket.create({
+        data: {
+            type: type,
+            cost: cost,
+            user: {},
+            event: {
+                connect: {
+                    id: event.id,
+                },
+            },
+        },
+        include: {
+            user: {include: {events: true}},
+            event: true,
+        },
+    });
+
+    return Ticket.from(ticketPrisma);
+};
+
 export default {
     getAllTickets,
     getTicketsByEventId,
     userBuyTicket,
     getTicketsByUserEmail,
     removeUserFromTicket,
+    createTicket,
 }

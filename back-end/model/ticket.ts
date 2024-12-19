@@ -72,9 +72,8 @@ export class Ticket {
         user,
         event,
     }: TicketPrisma & {
-        // user: UserPrisma;
-        user?: UserPrisma | null;
-        event: EventPrisma
+        user: UserPrisma & {events: EventPrisma[]} | null,
+        event: EventPrisma;
     }) {
         return new Ticket({
             id,

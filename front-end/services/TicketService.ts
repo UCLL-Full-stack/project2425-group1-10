@@ -1,3 +1,5 @@
+import { EventInput } from "types";
+
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const getAll = async () => {
@@ -26,8 +28,6 @@ const getTicketsByUserEmail = async (email: string) => {
 
 const getTicketsByEventId = async (eventId: string) => {
     const token = JSON.parse(localStorage.getItem("loggedInUser"))?.token;
-
-    console.log(eventId);
 
     return fetch(apiUrl + `/tickets/event/${eventId}`, {
         method: 'GET',
@@ -70,12 +70,27 @@ const removeTicketFromUser = async (ticketId: string) => {
     });
 };
 
+const createTicket = async (ticketType: string, ticketPrice: number, eventData: EventInput) => {
+    const token = JSON.parse(localStorage.getItem("loggedInUser"))?.token;
+    const ticketData = { type: ticketType, cost: ticketPrice, event: eventData };
+
+    return fetch(apiUrl + '/tickets/create', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(ticketData),
+    });
+}
+
 const TicketService = {
     getAll,
     getTicketsByEventId,
     userBuyTicket,
     removeTicketFromUser,
     getTicketsByUserEmail,
+    createTicket,
 };
 
 export default TicketService;

@@ -5,7 +5,7 @@ import database from './database';
 const getAll = async (): Promise<Invite[]> => {
     const invitesPrisma = await database.invite.findMany({
         include: {
-            user: true,
+            user: {include: {events: true}},
             event: true,
         },
     });
@@ -49,7 +49,7 @@ const createInvite = async (invite: Invite): Promise<Invite> => {
             },
         },
         include: {
-            user: true,
+            user: {include: {events: true}},
             event: true,
         },
     });
@@ -63,7 +63,7 @@ const getInvitesByEventId = async (eventId: string): Promise<Invite[]> => {
             eventId: Number(eventId),
         },
         include: {
-            user: true,
+            user: {include: {events: true}},
             event: true,
         },
     });
@@ -87,7 +87,7 @@ const getInvitesByUserEmail = async (email: string): Promise<Invite[]> => {
             userId: userPrisma.id,
         },
         include: {
-            user: true,
+            user: {include: {events: true}},
             event: true,
         },
     });
@@ -104,7 +104,7 @@ const changeInviteStatus = async (inviteId: string, statusData: string): Promise
             status: statusData,
         },
         include: {
-            user: true,
+            user: {include: {events: true}},
             event: true,
         },
     });

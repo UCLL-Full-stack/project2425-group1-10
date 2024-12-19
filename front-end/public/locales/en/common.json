@@ -1,0 +1,36 @@
+{
+    "app.title": "Eventora",
+    "title": "Home",
+    "header": {
+        "home": "Home",
+        "myInvites": "My invites",
+        "upcomingEvents": "Upcoming events",
+        "myEvents": "My events",
+        "createEvent": "Create event",
+        "logout": "Logout",
+        "welcome": "Welcome ",
+        "sama": "",
+        "usersOverview": "Users overview",
+        "invitesOverview": "Invites overview",
+        "login": "Login"
+    },
+    "language": {
+        "button": "Language",
+        "english": "English",
+        "japanese": "Japanese"
+    },
+    "main": {
+        "title": "Your go-to app for local events",
+        "description1": "Stay up to date with all the latest events in your local area. Whether it's concerts, workshops, community gatherings, or sports activities, you’ll find something that fits your interests. Discover what's happening near you and never miss out on the fun!",
+        "description2": "Have an idea for an event? Host it through Eventora! From private get-togethers to public festivals, you can easily create and manage your events. Invite friends, family, or the entire community, and watch your event grow as people RSVP and engage with your event details."
+    },
+    "predefinedUserTable": {
+        "title": "Predefined users for testing",
+        "email": "Email",
+        "password": "Password",
+        "role": "Role",
+        "admin": "ADMIN",
+        "organizer": "ORGANIZER",
+        "participant": "PARTICIPANT"
+    }
+}

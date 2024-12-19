@@ -1,35 +1,98 @@
 import Header from "@components/header";
 import Head from "next/head";
 import styles from '@styles/home.module.css';
+import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
+
 
 const Home: React.FC = () => {
+    const router = useRouter();
+    const { locale, pathname, asPath, query } = router;
+
+    const handleLanguageChange = (event: { target: { value: string } }) => {
+        // get new locale from event and push it to the router
+        const newLocale = event.target.value;
+        const { pathname, asPath, query } = router;
+        router.push({ pathname, query }, asPath, { locale: newLocale });
+    };
+    const { t } = useTranslation();
+
     return (
         <>
             <Head>
-                <title>Eventora</title>
+                <title>{t("title")}</title>
                 <meta name="description" content="Eventora app" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Header />
             <main className={styles.main}>
+                <div className={styles.homeLanguageHolder}>
+                    <label
+                        htmlFor="language">{t("language.button")}</label>
+                    <select
+                        id="language"
+                        value={locale}
+                        onChange={handleLanguageChange}
+                    >
+                        <option value="en">{t("language.english")}</option>
+                        <option value="jp">{t("language.japanese")}</option>
+                    </select>
+                </div>
                 <span>
-                    <h1>Your go-to app for local events</h1>
+                    <h1>{t("main.title")}</h1>
                 </span>
 
                 <div className={styles.description}>
                     <p>
-                    Stay up to date with all the latest events in your local area. 
-                    Whether it's concerts, workshops, community gatherings, or sports activities, 
-                    you’ll find something that fits your interests. Discover what's happening near you and never miss out on the fun! <br /><br />
-                    Have an idea for an event? Host it through Eventora! From private get-togethers to public festivals, 
-                    you can easily create and manage your events. Invite friends, family, or the entire community, 
-                    and watch your event grow as people RSVP and engage with your event details.
+                        {t("main.description1")} <br /><br />
+                        {t("main.description2")}
                     </p>
+                </div>
+
+                <div className={styles.usersHomeTableHolder}>
+                    <h2>{t("predefinedUserTable.title")}</h2>
+                    <table className={styles.usersHomeTable}>
+                        <thead>
+                            <tr>
+                                <th className={styles.usersTableth1}>{t("predefinedUserTable.email")}</th>
+                                <th>{t("predefinedUserTable.password")}</th>
+                                <th className={styles.usersTableth2}>{t("predefinedUserTable.role")}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>admin@admin</td>
+                                <td>admin</td>
+                                <td>{t("predefinedUserTable.admin")}</td>
+                            </tr>
+                            <tr>
+                                <td>john.doe@ucll.be</td>
+                                <td>passwordJohn</td>
+                                <td>{t("predefinedUserTable.organizer")}</td>
+                            </tr>
+                            <tr>
+                                <td>jane.doe@ucll.be</td>
+                                <td>passwordJane</td>
+                                <td>{t("predefinedUserTable.participant")}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </main>
         </>
     )
+};
+
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+export const getServerSideProps = async (context) => {
+    const { locale } = context;
+
+    return {
+        props: {
+            ...(await serverSideTranslations(locale ?? "en", ["common"])),
+        },
+    };
 };
 
 export default Home;

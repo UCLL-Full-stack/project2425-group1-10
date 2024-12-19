@@ -1,6 +1,6 @@
 type Role = 'ADMIN' | 'PARTICIPANT' | 'ORGANIZER';
 type TicketType = 'VIP' | 'REGULAR' | 'STUDENT' | 'FREE';
-type InviteStatus = 'PENDING' | 'CONFIRMED' | 'DECLINED';
+type InviteStatus = 'PENDING' | 'ACCEPT' | 'DECLINE';
 
 type UserInput = {
     id?: number,
@@ -10,6 +10,7 @@ type UserInput = {
     password: string,
     age: number,
     role: Role,
+    favoriteEvents?: EventInput[],
 };
 
 type EventInput = {

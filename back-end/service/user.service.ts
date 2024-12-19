@@ -1,5 +1,6 @@
 import useSWR from "swr";
 import { User } from "../model/user";
+import {Event} from "../model/event";
 import userDb from "../repository/user.db"
 import { AuthenticationResponse, Role, UserInput } from "../types";
 import bcrypt, { hash } from 'bcrypt';
@@ -58,9 +59,20 @@ const createUser = async (user: UserInput): Promise<User> => {
             password: hashedPass,
             age: user.age,
             role: user.role,
+            events: [],
     });
 
     return await userDb.createUser(newUser);
+}
+
+const addEventToFavorite = async (email: string, eventId: number): Promise<void> => {
+    const user = await userDb.getUserByEmail(email);
+
+    if (user === null){
+        throw new Error("User does not exist.");
+    }
+
+    return await userDb.addEventToFavorite(user, eventId);
 }
 
 //log-in authentication
@@ -95,15 +107,20 @@ const generateJwtToken = (username: string, role: Role) => {
         }
         return jwt.sign({username, role}, process.env.JWT_SECRET, options);
     } catch (error) {
-        console.log('Error generating token', error);
         throw new Error('Error generating JWT token, see server log for details.');
     }
 };
+
+const getFavoriteEventsByUserEmail = async (email: string): Promise<Event[]> => {
+    return userDb.getFavoriteEventsByUserEmail(email);
+}
 
 export default {
     getAllUsers,
     getUserById,
     getUserByEmail,
     createUser,
+    addEventToFavorite,
     authentication,
+    getFavoriteEventsByUserEmail,
 }

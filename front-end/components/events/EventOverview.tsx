@@ -3,17 +3,30 @@ import styles from '@styles/home.module.css';
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import EventService from "@services/EventService";
+import UserService from "@services/UserService";
 
 type Props = {
   events: EventInput[],
   showDeleteButton: boolean,
+  showLikeButton: boolean,
   email: string,
 };
 
-const EventOverview: React.FC<Props> = ({ events, showDeleteButton, email }: Props) => {
+const EventOverview: React.FC<Props> = ({ events, showDeleteButton, showLikeButton, email }: Props) => {
   const router = useRouter();
   const [user, setUsers] = useState<UserInput[]>();
   const [showTickets, setShowTickets] = useState<boolean>(false);
+  const [successfullyAddedEventToMyFavorites, setSuccessfullyAddedEventToMyFavorites] = useState<string>("");
+  const [emailData, setEmailData] = useState<string>(email);
+
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem('loggedInUser');
+    const user = loggedInUser ? JSON.parse(loggedInUser) : null;
+
+    if (user) {
+      setEmailData(user.email);
+    }
+}, []);
 
   const handleEventClick = (eventId: number) => {
     sessionStorage.setItem('eventId', eventId.toString());
@@ -28,6 +41,14 @@ const EventOverview: React.FC<Props> = ({ events, showDeleteButton, email }: Pro
 
     // Renew the events list when an event is removed
     setMyEvents(myEvents.filter(event => event.id !== eventId));
+  }
+
+  const addEventToFavorite = async (eventId: number, name: string) => {
+    const response = await UserService.addEventToFavorite(emailData, eventId);
+
+    if (response.ok) {
+      alert(`Event ${name} has been added to your favorite list!`);
+    }
   }
 
   return (
@@ -61,6 +82,19 @@ const EventOverview: React.FC<Props> = ({ events, showDeleteButton, email }: Pro
                       }}
                     ><img src="/icons/close-white.png" alt="Close icon" width="40px" height="40px" />
                     </button>
+                  }
+                  {showLikeButton === true && emailData !== "" &&
+                    <div className={styles.addToMyFavorite}>
+                      <button
+                        className={styles.addToMyFavoriteButton}
+                        onClick={(e) => {
+                          // Instead of triggering handleEventClick, it should trigger removeEvent
+                          e.stopPropagation();
+                          addEventToFavorite(event.id, event.name);
+                        }}
+                      ><img src="/icons/add-white.png" alt="Add icon" width="40px" height="40px" />
+                      </button>
+                    </div>
                   }
                 </div>
               </div>

@@ -34,10 +34,36 @@ const loginUser = async (user: UserInput) => {
     });
 }
 
+const addEventToFavorite = async (email: string, eventId: number) => {
+    const token = JSON.parse(localStorage.getItem("loggedInUser"))?.token;
+
+    return fetch(apiUrl + `/users/${email}/favorite-events/${eventId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    });
+}
+
+const getFavoriteEventsByUserEmail = async (email: string) => {
+    const token = JSON.parse(localStorage.getItem("loggedInUser"))?.token;
+
+    return fetch(apiUrl + `/users/${email}/favorite-events`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    });
+}
+
 const UserService = {
     getAll,
     createUser,
     loginUser,
+    addEventToFavorite,
+    getFavoriteEventsByUserEmail,
 }
 
 export default UserService;

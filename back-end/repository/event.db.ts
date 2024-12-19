@@ -6,7 +6,7 @@ import database from './database';
 const getAllEvents = async (): Promise<Event[]> => {
     const eventsPrisma = await database.event.findMany({
         include: {
-            // users: true,
+            users: true,
             tickets: true,
         },
     });
@@ -19,6 +19,7 @@ const getEventById = async (id: number): Promise<Event> => {
             id: id,
         },
         include: {
+            users: true,
             tickets: true,
         },
     });
@@ -29,89 +30,22 @@ const getEventById = async (id: number): Promise<Event> => {
     return Event.from(eventPrisma);
 };
 
-// const addParticipantToEvent = async (email: string, eventId: number): Promise<Event> => {
-
-//     const userExisted = await userExist(email, eventId);
-//     if (userExisted) {
-//         throw new Error(`User [${email}] already exists in this event.`);
-//     };
-
-//     const user = await database.user.findUnique({
-//         where: {
-//             email: email,
-//         },
-//     });
-
-//     if (!user) {
-//         throw new Error(`User [${email}] not found.`);
-//     }
-
-//     const update = await database.event.update({
-//         where: {
-//             id: eventId,
-//         },
+// const createEvent = async (eventData: Event): Promise<Event> => {
+//     const eventPrisma = await database.event.create({
 //         data: {
+//             name: eventData.name,
+//             description: eventData.description,
+//             date: eventData.date,
+//             location: eventData.location,
+//             category: eventData.category,
+//             isTrending: false,
 //             users: {
-//                 connect: {
-//                     id: user.id,
-//                 },
-//             },
-//         },
-//         include: {
-//             users: true,
-//             tickets: true,
-//         },
-//     });
-
-//     return Event.from(update);
-// };
-
-// const userExist = async (email: string, eventId: number): Promise<boolean> => {
-//     const event = await getEventById(eventId);
-
-//     for (const user of event.getUsers()) {
-//         if (user.getEmail() === email) {
-//             return true;
+//                 connect: []
+//             }
 //         }
-//     }
-
-//     return false;
-// };
-
-// const getEventsByUserEmail = async (email: string): Promise<Event[]> => {
-//     const events = await database.event.findMany({
-//         where: {
-//             users: {
-//                 some: {
-//                     email: email,
-//                 },
-//             },
-//         },
-//         include: {
-//             users: true,
-//             tickets : true,
-//         },
-//     });
-//     return events.map((event) => Event.from(event));
-// };
-
-
-// remove events
-// const removeFromMyEvents = async (email: string, eventId: number) => {
-//     await database.event.update({
-//         where: {
-//             id: eventId, //event op basis van id
-//         },
-//         data: {
-//             users: {
-//                 disconnect: {
-//                     email: email,
-//                 },
-//             },
-//         },
 //     });
 
-//     // return { success: true, message: `Event ${eventId} successfully deleted ${email}.` };
+//     return Event.from(eventPrisma);
 // };
 
 //Create event:
@@ -147,4 +81,5 @@ export default {
     // getEventsByUserEmail,
     // userExist,
     // removeFromMyEvents
+
 };

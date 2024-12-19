@@ -17,6 +17,7 @@ const testUser = new User({
     password: 'securePass123', // Valid password (>= 8 characters)
     age: 25,
     role: 'USER' as Role,
+    events:[],
 })
 
 const testEvent = new Event({

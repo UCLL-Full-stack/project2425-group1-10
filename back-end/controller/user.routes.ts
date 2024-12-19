@@ -40,7 +40,27 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
             next(error);
         }
     }
+})
 
+userRouter.put('/:email/favorite-events/:eventId', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const email = req.params.email;
+        const eventId = parseInt(req.params.eventId);
+        await userService.addEventToFavorite(email, eventId);
+        res.status(200).json({ message: 'Event added to favorites' });
+    } catch (error) {
+        next(error);
+    }
+})
+
+userRouter.get('/:email/favorite-events', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const email = req.params.email;
+        const favoriteEvents = await userService.getFavoriteEventsByUserEmail(email);
+        res.status(200).json(favoriteEvents);
+    } catch (error) {
+        next(error);
+    }
 })
 
 export { userRouter };

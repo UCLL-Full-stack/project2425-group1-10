@@ -75,4 +75,15 @@ const MyInvites: React.FC = () => {
     )
 };
 
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+export const getServerSideProps = async (context) => {
+    const { locale } = context;
+
+    return {
+        props: {
+            ...(await serverSideTranslations(locale ?? "en", ["common"])),
+        },
+    };
+};
+
 export default MyInvites;

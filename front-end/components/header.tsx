@@ -5,12 +5,15 @@ import { UserInput, InviteInput, TicketInput } from '@types';
 import InviteService from '../services/InviteService';
 import TicketService from '../services/TicketService';
 import useInterval from "use-interval";
+import { useTranslation } from "next-i18next";
 
 const Header: React.FC = () => {
     const [loggedUser, setLoggedUser] = useState<UserInput>(null);
     const [invites, setInvites] = useState<InviteInput[]>();
     const [tickets, setTickets] = useState<TicketInput[]>([]);
     const [eventsTotal, setEventsTotal] = useState<number>(0);
+
+    const { t } = useTranslation();
 
     useEffect(() => {
         setLoggedUser(JSON.parse(localStorage.getItem('loggedInUser')));
@@ -20,10 +23,6 @@ const Header: React.FC = () => {
         if (loggedUser?.email) {
             getInvitesByUserEmail(loggedUser.email);
             getTicketsByUserEmail(loggedUser.email);
-            console.log('invites: ');
-            console.log(invites);
-            console.log('tickets: ');
-            console.log(tickets);
         }
     }, [loggedUser]);
 
@@ -53,36 +52,38 @@ const Header: React.FC = () => {
         <header className="p-3 bg-black">
             <a className="fs-1 d-flex justify-content-center mb-2 mb-lg-0 text-white text-decoration-none">
                 {' '}
-                Eventora
+                {t("app.title")}
             </a>
             <nav className="nav justify-content-center">
                 <Link href="/" className={`nav-link px-4 fs-5 ${isActive('/') ? 'text-white' : 'text-white-50'}`}>
-                    Home
+                    {t("header.home")}
                 </Link>
 
                 {loggedUser && loggedUser.role !== 'ADMIN' && (
                     <Link href="/my-invites" className={`nav-link px-4 fs-5 ${isActive('/my-invites') ? 'text-white' : 'text-white-50'}`}>
-                        My invites {invites && (
+                        {t("header.myInvites")} {invites && (
                             <span className="badge bg-danger">{invites.filter(invite => invite.status === 'PENDING').length}</span>
                         )}
                     </Link>
                 )}
 
                 <Link href="/upcoming-events" className={`nav-link px-4 fs-5 ${isActive('/upcoming-events') ? 'text-white' : 'text-white-50'}`}>
-                    Upcoming events
+                    {t("header.upcomingEvents")}
                 </Link>
+
+                {loggedUser && (loggedUser.role === 'ADMIN' || loggedUser.role === 'ORGANIZER') && (
+                    <Link href="/create-event" className={`nav-link px-4 fs-5 ${isActive('/create-event') ? 'text-white' : 'text-white-50'}`}>
+                        {t("header.createEvent")}
+                    </Link>
+                )}
 
                 {loggedUser && loggedUser.role !== 'ADMIN' && (
                     <Link href="/my-events" className={`nav-link px-4 fs-5 ${isActive('/my-events') ? 'text-white' : 'text-white-50'}`}>
-                        My events {tickets && invites && (
+                        {t("header.myEvents")} {tickets && invites && (
                             <span className="badge bg-danger">{tickets.length + invites.filter(invite => invite.status === 'ACCEPT').length}</span>
                         )}
                     </Link>
                 )}
-
-                <Link href="/create-event" className={`nav-link px-4 fs-5 ${isActive('/create-event') ? 'text-white' : 'text-white-50'}`}>
-                    Create event
-                </Link>
 
                 {loggedUser ? (
                     <>
@@ -92,14 +93,14 @@ const Header: React.FC = () => {
                                     href="/users"
                                     className={`nav-link px-4 fs-5 ${isActive('/users') ? 'text-white' : 'text-white-50'}`}
                                 >
-                                    Users
+                                    {t("header.usersOverview")}
                                 </Link>
 
                                 <Link
                                     href="/invites-overview"
                                     className={`nav-link px-4 fs-5 ${isActive('/invites-overview') ? 'text-white' : 'text-white-50'}`}
                                 >
-                                    Invites overview
+                                    {t("header.invitesOverview")}
                                 </Link>
                             </>
                         )}
@@ -109,15 +110,15 @@ const Header: React.FC = () => {
                             className="nav-link px-4 fs-5 text-white-50"
                             onClick={handleLogout}
                         >
-                            Logout
+                            {t("header.logout")}
                         </Link>
                         <Link href="/" className="nav-link px-4 fs-5 text-white-50">
-                            Welcome {loggedUser.name}!
+                            {t("header.welcome")} {loggedUser.name}{t("header.sama")}!
                         </Link>
                     </>
                 ) : (
                     <Link href="/login" className={`nav-link px-4 fs-5 ${isActive('/login') ? 'text-white' : 'text-white-50'}`}>
-                        Login
+                        {t("header.login")}
                     </Link>
                 )}
             </nav>

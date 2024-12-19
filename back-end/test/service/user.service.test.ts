@@ -11,6 +11,7 @@ const user = new User({
     password: "testingthis123",
     age: 19,
     role: 'participant' as Role,
+    events: [],
 })
 
 let createUserMock: jest.Mock;

@@ -1,8 +1,6 @@
 export type Role = 'ADMIN' | 'PARTICIPANT' | 'ORGANIZER';
-
 export type TicketType = 'VIP' | 'REGULAR' | 'STUDENT' | 'FREE';
-
-export type InviteStatus = 'PENDING' | 'CONFIRMED' | 'DECLINED';
+export type InviteStatus = 'PENDING' | 'ACCEPT' | 'DECLINE';
 
 export type UserInput = {
     id?: number,
@@ -22,7 +20,6 @@ export type EventInput = {
     location: string,
     category: string,
     backgroundImage?: string,
-    // users: UserInput[],
     isTrending: boolean,
 };
 

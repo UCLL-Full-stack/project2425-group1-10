@@ -1,6 +1,6 @@
 import {
     Event as EventPrisma,
-    // user as userPrisma,
+    User as UserPrisma,
     // Ticket as TicketPrisma,
     // User as UserPrisma,
 } from '@prisma/client';
@@ -9,14 +9,14 @@ import { Ticket } from './ticket';
 
 
 export class Event {
-    private id?: number;
-    private name: string;
-    private description: string;
-    private date: Date;
-    private location: string;
-    private category: string;
-    private backgroundImage?: string;
-    private isTrending: boolean;
+    readonly id?: number;
+    readonly name: string;
+    readonly description: string;
+    readonly date: Date;
+    readonly location: string;
+    readonly category: string;
+    readonly backgroundImage?: string;
+    readonly isTrending: boolean;
 
     constructor(event: {
         id?: number,
@@ -99,17 +99,15 @@ export class Event {
         return this.backgroundImage;
     }
 
-    // getTickets(): Ticket[] {
-    //     return this.tickets;
-    // }
-
     equals(event: Event): boolean {
         return (
             this.name === event.getName() &&
             this.description === event.getDescription() &&
             this.date === event.getDate() &&
             this.location === event.getLocation() &&
-            this.category === event.getCategory()
+            this.category === event.getCategory() &&
+            this.backgroundImage === event.getBackgroundImage() &&
+            this.isTrending === event.getIsTrending()
         );
     }
 
@@ -122,7 +120,10 @@ export class Event {
         category,
         backgroundImage,
         isTrending,
-    }: EventPrisma) {
+        // users,
+    }: EventPrisma
+        // & {users: UserPrisma[]}
+    ) {
         return new Event({
             id,
             name,
@@ -132,7 +133,8 @@ export class Event {
             category,
             backgroundImage,
             isTrending,
+            // users: users.map(user => User.from(user))
         });
-    }
+    };
 
 }

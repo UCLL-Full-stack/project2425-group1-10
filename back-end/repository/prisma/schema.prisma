@@ -15,8 +15,9 @@ model User {
     password    String
     age         Int
     role        String
-    tickets      Ticket[]
+    tickets     Ticket[]
     invites     Invite[]
+    events      Event[]
 }
 
 model Event {
@@ -30,6 +31,7 @@ model Event {
     isTrending      Boolean
     tickets         Ticket[]
     invites         Invite[]
+    users           User[]
 }
 
 model Ticket {

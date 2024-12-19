@@ -8,6 +8,9 @@ const Signup: React.FC = () => {
         <>
             <Head>
                 <title>User Signup</title>
+                <meta name="description" content="Overview of my upcoming events" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <link rel="icon" href="/favicon.ico" />
             </Head>
             <Header />
             <main className={styles.myEventsMain}>
@@ -17,6 +20,17 @@ const Signup: React.FC = () => {
             </main>
         </>
     );
+};
+
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+export const getServerSideProps = async (context) => {
+    const { locale } = context;
+
+    return {
+        props: {
+            ...(await serverSideTranslations(locale ?? "en", ["common"])),
+        },
+    };
 };
 
 export default Signup;

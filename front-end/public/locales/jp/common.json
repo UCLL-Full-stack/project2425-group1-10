@@ -1,0 +1,36 @@
+{
+    "app.title": "イベントラ",
+    "title": "ホーム",
+    "header": {
+        "home": "ホーム",
+        "myInvites": "招待",
+        "upcomingEvents": "今後のイベント",
+        "myEvents": "自分のイベント",
+        "createEvent": "イベント作成",
+        "logout": "ログアウト",
+        "welcome": "ようこそ ",
+        "sama": "様",
+        "usersOverview": "ユーザリスト",
+        "invitesOverview": "招待リスト",
+        "login": "ログイン"
+    },
+    "language": {
+        "button": "言語",
+        "english": "英語",
+        "japanese": "日本語"
+    },
+    "main": {
+        "title": "地元のイベントのための頼りになるアプリ",
+        "description1": "地元の最新イベント情報を常に把握しましょう。コンサート、ワークショップ、地域の集まり、スポーツ活動など、あなたの興味に合ったイベントが見つかります。近くで何が起こっているのかを発見し、楽しみを逃さないようにしましょう！",
+        "description2": "イベントのアイデアがありますか？Eventoraを通じてホストしましょう！プライベートな集まりから公共のフェスティバルまで、簡単にイベントを作成して管理できます。友達、家族、またはコミュニティ全体を招待し、参加者がRSVPしてイベントの詳細に関与する様子を見守りましょう。"
+    },
+    "predefinedUserTable": {
+        "title": "テスト用の事前定義ユーザー",
+        "email": "アドレス",
+        "password": "パスワード",
+        "role": "役",
+        "admin": "管理者",
+        "organizer": "主催者",
+        "participant": "参加者"
+    }
+}

@@ -4,12 +4,13 @@ import EventOverview from '@components/events/EventOverview'
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import styles from '@styles/home.module.css';
-import { EventInput } from "types";
+import { EventInput, UserInput } from "types";
 
 const UpcomingEvents: React.FC = () => {
     const [otherEvents, setOtherEvents] = useState<Array<Event>>();
     const [trendingEvents, setTrendingEvents] = useState<Array<Event>>();
     // const [showParticipantList, setShowParticipantList] = useState(true);
+    const [loggedUser, setLoggedUser] = useState<UserInput>();
 
     useEffect(() => {
         getAll();
@@ -40,13 +41,24 @@ const UpcomingEvents: React.FC = () => {
             <Header />
             <main className={styles.upcomingEventsMain}>
                 <h1>Top Trending Events</h1>
-                {trendingEvents && <EventOverview events={trendingEvents} showDeleteButton={false} email="" />}
+                {trendingEvents && <EventOverview events={trendingEvents} showDeleteButton={false} showLikeButton={true} email="" />}
                 
                 <h1>Other events that you might like</h1>
-                {otherEvents && <EventOverview events={otherEvents} showDeleteButton={false} email="" />}
+                {otherEvents && <EventOverview events={otherEvents} showDeleteButton={false} showLikeButton={true} email="" />}
             </main>
         </>
     );
+};
+
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+export const getServerSideProps = async (context) => {
+    const { locale } = context;
+
+    return {
+        props: {
+            ...(await serverSideTranslations(locale ?? "en", ["common"])),
+        },
+    };
 };
 
 export default UpcomingEvents;
