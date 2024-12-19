@@ -37,19 +37,42 @@ const createInvite = async (userEmail: string, eventId: string): Promise<Invite>
 };
 
 const getInvitesByEventId = async (eventId: string): Promise<Invite[]> => {
+    if (!eventId || typeof eventId !== 'string' || eventId.trim().length === 0) {
+        throw new Error('EventId must be a string and cannot be empty.');
+    }
+
     const invites = await inviteDb.getInvitesByEventId(eventId);
     return invites;
 };
 
 const getInvitesByUserEmail = async (email: string): Promise<Invite[]> => {
-    const invites = await inviteDb.getInvitesByUserEmail(email);
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+        throw new Error('Invalid email format.');
+
+    }const invites = await inviteDb.getInvitesByUserEmail(email);
+
+    
+
     return invites;
 }
 
 const changeInviteStatus = async (inviteId: string, status: string): Promise<Invite> => {
+    // Validate inviteId
+    if (!inviteId || typeof inviteId !== 'string' || inviteId.trim().length === 0) {
+        throw new Error('inviteId must be a non-empty string.');
+    }
+
+    // Validate status
+    const validStatuses = ['PENDING', 'ACCEPTED', 'DECLINED'];
+    if (!validStatuses.includes(status)) {
+        throw new Error('Invalid status provided. Must be one of: PENDING, ACCEPTED, DECLINED.');
+    }
+    
+
+    // Proceed with changing the invite status in the database
     const inviteStatusChange = await inviteDb.changeInviteStatus(inviteId, status);
     return inviteStatusChange;
-}
+};
 
 export default {
     getAll,

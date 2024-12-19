@@ -20,6 +20,7 @@ const user = new User({
 });
 
 const event = {
+    id: 8,
     name: 'Sample Event',
     description: 'An example event',
     date: new Date(),
@@ -43,6 +44,7 @@ let mockInviteDbGetInvitesByEventId: jest.Mock;
 let mockInviteDbGetInvitesByUserEmail: jest.Mock;
 let mockInviteDbChangeInviteStatus: jest.Mock;
 
+let mockUserDbGetUserById: jest.Mock;
 let mockUserDbGetUserByEmail: jest.Mock;
 let mockEventDbGetEventById: jest.Mock;
 
@@ -57,6 +59,9 @@ beforeEach(() => {
 
     mockUserDbGetUserByEmail = jest.fn();
     mockEventDbGetEventById = jest.fn();
+    mockUserDbGetUserById = jest.fn();
+
+    inviteDb.getInvitesByEventId = mockInviteDbGetInvitesByEventId;
 })
 
 afterEach(() => {
@@ -89,10 +94,22 @@ test('Given: no invites, When: getAll is caleld, Then: an error is thrown', asyn
 
 
 //createInvite:
+
+
 //happy
+// test('Given: valid user email and event ID, When: createInvite is called, Then: an invite is successfully created', async () => {
+//     eventDb.getEventById = mockEventDbGetEventById.mockResolvedValue(event);
+//     userDb.getUserById = mockUserDbGetUserById.mockRejectedValue(user);
 
+//     const createInvite = async () => {
+//         await inviteService.createInvite({user: mockUserDbGetUserByEmail, event: mockInviteDbGetInvitesByEventId})
+//     }
 
-
+//     expect(createInviteMock).toHaveBeenCalledTimes(1);
+//     expect(createInviteMock).toHaveBeenCalledWith(new Invite({    status: 'PENDING',
+//         user: user,
+//         event: event,}))
+// });
 
 
 //unhappy
@@ -122,20 +139,113 @@ test('Given: a user already invited to the event, When: createInvite is called, 
 
 //getinvitesByeventid
 //happy
+test('Given: no invites for the event, When: getInvitesByEventId is called, Then: it returns an empty array', async () => {
+    const mockEventId = '123'; // Ensure eventId is a string as expected in the service
+
+    // Mock the database call to return an empty array for the given eventId
+    mockInviteDbGetInvitesByEventId.mockResolvedValue([]); // Return an empty array when called with mockEventId
+
+    // Call the service method with the correct eventId
+    const result = await inviteService.getInvitesByEventId(mockEventId);
+
+    // Assertions:
+    // Ensure that the mock function was called with the correct eventId
+    expect(mockInviteDbGetInvitesByEventId).toHaveBeenCalledWith(mockEventId);
+    // Ensure that the result is an empty array, as there are no invites for this event
+    expect(result).toEqual([]);
+});
 
 //unhappy
+test('given an empty string eventId, when getInvitesByEventId is called, then an error is thrown', async () => {
+    // given
+    const invalidEventId = ''; // Empty string (non-valid)
+
+    // Mocking the database function (though it won't be called in this test)
+    mockInviteDbGetInvitesByEventId.mockResolvedValue([]);
+
+    // when & then
+    await expect(inviteService.getInvitesByEventId(invalidEventId)).rejects.toThrow('EventId must be a string and cannot be empty.');
+});
+//unhappy 2
+test('Given: a wrong eventId, when getInvitesByEventId is called, then an error is thrown', async () => {
+    // given
+    const invalidEventId: number = 12345; // Non-string, number
+
+    // Mocking the database function (though it won't be called in this test)
+    mockInviteDbGetInvitesByEventId.mockResolvedValue([]);
+
+    // when & then
+    await expect(inviteService.getInvitesByEventId(invalidEventId as any)).rejects.toThrow('EventId must be a string and cannot be empty.'); //here it is like the type of invalideventid is anything which isnt what we want we want a string thats why its error 
+});
 
 
 
 //getinvitesbyuseremail
 //happy
+test('Given: a valid email, when: getInviteByUserEmail is called, then: the correct invite is returned.', async () => {
+    //Given:
+    inviteDb.getInvitesByUserEmail = mockInviteDbGetInvitesByUserEmail.mockResolvedValue(invite);
+
+    //When:
+    const result = await inviteService.getInvitesByUserEmail('john.doe@ucll.be');
+
+    expect(mockInviteDbGetInvitesByUserEmail).toHaveBeenCalledTimes(1);
+    expect(mockInviteDbGetInvitesByUserEmail).toHaveBeenCalledWith('john.doe@ucll.be');
+    expect(result).toEqual(invite);
+})
 
 //unhappy
+test('Given: an invalid email format, When: getInvitesByUserEmail is called, Then: an error is thrown.', async () => {
+    //Given:
+    const invalidEmail = 'thisformat_iswrong';
 
-
-
+    //When and Then:
+    await expect(inviteService.getInvitesByUserEmail(invalidEmail)).rejects.toThrow('Invalid email format.')
+})
 
 //changeinvitestatus
 //happy
+// test('Given: valid inviteId and status, When: changeInviteStatus is called, Then: status is successfully updated', async () => {
+//     // Given: valid inviteId and status
+//     const inviteId = '12345';
+//     const newStatus = 'ACCEPTED';
+
+//     // Mocking the database function to simulate a successful update
+//     mockInviteDbChangeInviteStatus.mockResolvedValue({
+//         inviteId: inviteId,
+//         status: newStatus,
+//     });
+
+//     // When: Calling changeInviteStatus
+//     const updatedInvite = await inviteService.changeInviteStatus(inviteId, newStatus);
+
+//     // Then: The invite's status should be updated successfully
+//     expect(updatedInvite.getStatus()).toBe(newStatus);  // Expect the status to match the new status
+//     expect(mockInviteDbChangeInviteStatus).toHaveBeenCalledWith(inviteId, newStatus);  // Ensure the DB function was called correctly
+// });
+
 
 //unhappy
+test('Given: an invalid inviteId (empty string), When: changeInviteStatus is called, Then: an error is thrown', async () => {
+    // Given: invalid inviteId
+    const invalidInviteId = '';
+    const validStatus = 'ACCEPTED';
+
+    // When: Calling changeInviteStatus
+    const changeStatus = async () => await inviteService.changeInviteStatus(invalidInviteId, validStatus);
+
+    // Then: Error is thrown for invalid inviteId
+    await expect(changeStatus).rejects.toThrow('inviteId must be a non-empty string.');
+});
+
+test('Given: an invalid status, When: changeInviteStatus is called, Then: an error is thrown', async () => {
+    // Given: valid inviteId but invalid status
+    const validInviteId = '12345';
+    const invalidStatus = 'INVALID_STATUS';
+
+    // When: Calling changeInviteStatus
+    const changeStatus = async () => await inviteService.changeInviteStatus(validInviteId, invalidStatus);
+
+    // Then: Error is thrown for invalid status
+    await expect(changeStatus).rejects.toThrow('Invalid status provided. Must be one of: PENDING, ACCEPTED, DECLINED.');
+});
