@@ -21,6 +21,23 @@ export class Ticket {
         user: User | null;
         event: Event;
     }) {
+
+        if (!ticket.type) {
+            throw new Error('Type cannot be empty.');
+        }
+
+        if (!ticket.cost) {
+            throw new Error('Cost cannot be empty.');
+        }
+
+        if (ticket.cost < 0) {
+            throw new Error('Cost cannot be negative.');
+        }
+
+        if (!ticket.event) {
+            throw new Error('Event cannot be empty.');
+        }
+
         this.id = ticket.id;
         this.type = ticket.type;
         this.cost = ticket.cost;

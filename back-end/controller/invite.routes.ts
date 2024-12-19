@@ -63,7 +63,11 @@ inviteRouter.get('/', async (req: Request, res: Response, next: NextFunction) =>
         const invites = await inviteService.getAll();
         res.status(200).json(invites);
     } catch (error) {
-        next(error);
+        if (error instanceof Error) {
+            res.status(400).json({ message: error.message });
+        } else {
+            res.status(400).json({ message: 'An unknown error occurred' });
+        }
     }
 });
 
@@ -102,7 +106,19 @@ inviteRouter.get('/', async (req: Request, res: Response, next: NextFunction) =>
 inviteRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userEmail = req.body.email;
+
+        if (!userEmail) {
+            res.status(400).json({ message: 'Email is required' });
+            return;
+        }
+
         const eventId = req.body.eventId;
+
+        if (!eventId) {
+            res.status(400).json({ message: 'Event ID is required.' });
+            return;
+        }
+
         const invite = await inviteService.createInvite(userEmail, eventId);
         res.status(200).json(invite);
     } catch (error) {
@@ -146,10 +162,22 @@ inviteRouter.post('/', async (req: Request, res: Response, next: NextFunction) =
 inviteRouter.get('/:eventId', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const eventId = req.params.eventId;
+
+        if (!eventId) {
+            res.status(400).json({ message: 'Event ID is required.' });
+            return;
+        }
+
         const invites = await inviteService.getInvitesByEventId(eventId);
         res.status(200).json(invites);
+
     } catch (error) {
-        next(error);
+
+        if (error instanceof Error) {
+            res.status(400).json({ message: error.message });
+        } else {
+            res.status(400).json({ message: 'An unknown error occurred' });
+        }
     }
 });
 
@@ -185,10 +213,22 @@ inviteRouter.get('/:eventId', async (req: Request, res: Response, next: NextFunc
 inviteRouter.get('/user/:email', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const email = req.params.email;
+
+        if (!email) {
+            res.status(400).json({ message: 'Email is required.' });
+            return;
+        }
+
         const invites = await inviteService.getInvitesByUserEmail(email);
+
         res.status(200).json(invites);
+
     } catch (error) {
-        next(error);
+        if (error instanceof Error) {
+            res.status(400).json({ message: error.message });
+        } else {
+            res.status(400).json({ message: 'An unknown error occurred' });
+        }
     }
 });
 
@@ -227,11 +267,29 @@ inviteRouter.get('/user/:email', async (req: Request, res: Response, next: NextF
 inviteRouter.put('/status/:inviteId/:answer', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const inviteId = req.params.inviteId;
+
+        if (!inviteId) {
+            res.status(400).json({ message: 'Invite ID is required.' });
+            return;
+        }
+
         const status = req.params.answer;
+
+        if (!status) {
+            res.status(400).json({ message: 'Status is required.' });
+            return;
+        }
+
         const inviteStatusChange = await inviteService.changeInviteStatus(inviteId, status);
         res.status(200).json(inviteStatusChange);
+        
     } catch (error) {
-        next(error);
+
+        if (error instanceof Error) {
+            res.status(400).json({ message: error.message });
+        } else {
+            res.status(400).json({ message: 'An unknown error occurred' });
+        }
     }
 })
 

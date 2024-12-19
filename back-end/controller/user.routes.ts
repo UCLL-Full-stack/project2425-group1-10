@@ -132,8 +132,11 @@ userRouter.post('/signup', async (req: Request, res: Response, next: NextFunctio
 
         res.status(200).json(createdUser);
     } catch (error){
-
-        next(error);
+        if (error instanceof Error) {
+            res.status(400).json({ message: error.message });
+        } else {
+            res.status(400).json({ message: 'An unknown error occurred' });
+        }
     }
 })
 
@@ -180,9 +183,9 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
         res.status(200).json({ message: 'Authentication successful', ... response});
     } catch (error) {
         if (error instanceof Error) {
-            res.status(401).json({ message: "Incorrect username or password.", type: 'error'});
+            res.status(400).json({ message: error.message });
         } else {
-            next(error);
+            res.status(400).json({ message: 'An unknown error occurred' });
         }
     }
 })
@@ -231,7 +234,11 @@ userRouter.put('/:email/favorite-events/:eventId', async (req: Request, res: Res
         await userService.addEventToFavorite(email, eventId);
         res.status(200).json({ message: 'Event added to favorites' });
     } catch (error) {
-        next(error);
+        if (error instanceof Error) {
+            res.status(400).json({ message: error.message });
+        } else {
+            res.status(400).json({ message: 'An unknown error occurred' });
+        }
     }
 })
 
@@ -270,7 +277,11 @@ userRouter.get('/:email/favorite-events', async (req: Request, res: Response, ne
         const favoriteEvents = await userService.getFavoriteEventsByUserEmail(email);
         res.status(200).json(favoriteEvents);
     } catch (error) {
-        next(error);
+        if (error instanceof Error) {
+            res.status(400).json({ message: error.message });
+        } else {
+            res.status(400).json({ message: 'An unknown error occurred' });
+        }
     }
 })
 

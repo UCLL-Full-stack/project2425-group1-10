@@ -128,7 +128,8 @@ eventRouter.get('/details/:id', async (req: Request, res: Response, next: NextFu
         }
         res.status(200).json(event);
     } catch (error) {
-        res.status(400).json({ status: 'error', message: 'Could not fetch event.' });
+        const err = error as Error;
+        res.status(400).json({ status: 'error', message: err.message });
     }
 });
 
@@ -161,9 +162,10 @@ eventRouter.get('/details/:id', async (req: Request, res: Response, next: NextFu
 eventRouter.post('/create', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const event = await eventService.createEvent(req.body);
-        res.status(201).json(event);
+        res.status(200).json(event);
     } catch (error) {
-        res.status(400).json({ status: 'error', message: 'Could not create event.' });
+        const err = error as Error;
+        res.status(400).json({ status: 'error', message: err.message });
     }
 });
 

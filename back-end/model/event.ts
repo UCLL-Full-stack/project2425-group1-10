@@ -30,20 +30,20 @@ export class Event {
     }) {
         // Validate the date
         if (isNaN(event.date.getTime())) {
-            throw new Error('Date is invalid');
+            throw new Error('Date is invalid.');
         }
 
         if (!event.name) {
-            throw new Error('Name cannot be empty');
+            throw new Error('Name cannot be empty.');
         }
         if (!event.description) {
-            throw new Error('Description cannot be empty');
+            throw new Error('Description cannot be empty.');
         }
         if (!event.location) {
-            throw new Error('Location cannot be empty');
+            throw new Error('Location cannot be empty.');
         }
         if (!event.category) {
-            throw new Error('Category cannot be empty');
+            throw new Error('Category cannot be empty.');
         }
 
         this.id = event.id;

@@ -27,6 +27,38 @@ export class User {
         role: Role,
         events: Event[],
     }) {
+        if (!user.username) {
+            throw new Error('Username cannot be empty.');
+        }
+
+        if (!user.name) {
+            throw new Error('Name cannot be empty.');
+        }
+
+        if (!user.email) {
+            throw new Error('Email cannot be empty.');
+        }
+
+        if (user.email && !user.email.includes('@') && !user.email.includes('.')) {
+            throw new Error('Email is invalid.');
+        }
+
+        if (!user.password) {
+            throw new Error('Password cannot be empty.');
+        }
+
+        if (user.password.length < 8) {
+            throw new Error('Password must be at least 8 characters.');
+        }
+
+        if (!user.age) {
+            throw new Error('Age cannot be empty.');
+        }
+
+        if (!user.role) {
+            throw new Error('Role cannot be empty.');
+        }
+
         this.id = user.id;
         this.username = user.username;
         this.name = user.name;

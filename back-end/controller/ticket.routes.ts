@@ -95,7 +95,11 @@ ticketRouter.get('/', async (req: Request, res: Response, next: NextFunction) =>
         const tickets = await ticketService.getAllTickets();
         res.status(200).json(tickets);
     } catch (error) {
-        next(error);
+        if (error instanceof Error) {
+            res.status(400).json({ message: error.message });
+        } else {
+            res.status(400).json({ message: 'An unknown error occurred' });
+        }
     }
 });
 
@@ -132,7 +136,11 @@ ticketRouter.get('/:email', async (req: Request, res: Response, next: NextFuncti
         const tickets = await ticketService.getTicketsByUserEmail(email);
         res.status(200).json(tickets);
     } catch (error) {
-        next(error);
+        if (error instanceof Error) {
+            res.status(400).json({ message: error.message });
+        } else {
+            res.status(400).json({ message: 'An unknown error occurred' });
+        }
     }
 });
 
@@ -170,7 +178,11 @@ ticketRouter.get('/event/:eventId', async (req: Request, res: Response, next: Ne
         const tickets = await ticketService.getTicketsByEventId(eventId);
         res.status(200).json(tickets);
     } catch (error) {
-        next(error);
+        if (error instanceof Error) {
+            res.status(400).json({ message: error.message });
+        } else {
+            res.status(400).json({ message: 'An unknown error occurred' });
+        }
     }
 });
 
@@ -212,7 +224,11 @@ ticketRouter.put('/purchase/:ticketId', async (req: Request, res: Response, next
         const ticket = await ticketService.userBuyTicket(ticketId, email);
         res.status(200).json(ticket);
     } catch (error) {
-        next(error);
+        if (error instanceof Error) {
+            res.status(400).json({ message: error.message });
+        } else {
+            res.status(400).json({ message: 'An unknown error occurred' });
+        }
     }
 });
 
@@ -247,7 +263,11 @@ ticketRouter.put('/:ticketId/user', async (req: Request, res: Response, next: Ne
         const response = await ticketService.removeUserFromTicket(req.params.ticketId);
         res.status(200).json(response);
     } catch (error) {
-        next(error);
+        if (error instanceof Error) {
+            res.status(400).json({ message: error.message });
+        } else {
+            res.status(400).json({ message: 'An unknown error occurred' });
+        }
     }
 })
 
@@ -290,7 +310,11 @@ ticketRouter.post('/create', async (req: Request, res: Response, next: NextFunct
         const ticket = await ticketService.createTicket(type, cost, event);
         res.status(200).json(ticket);
     } catch (error) {
-        next(error);
+        if (error instanceof Error) {
+            res.status(400).json({ message: error.message });
+        } else {
+            res.status(400).json({ message: 'An unknown error occurred' });
+        }
     }
 });
 

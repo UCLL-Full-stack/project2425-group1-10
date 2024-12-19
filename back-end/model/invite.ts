@@ -20,6 +20,19 @@ export class Invite {
         user: User;
         event: Event;
     }) {
+
+        if (!invite.status) {
+            throw new Error('Status cannot be empty.');
+        }
+
+        if (!invite.user) {
+            throw new Error('User cannot be empty.');
+        }
+
+        if (!invite.event) {
+            throw new Error('Event cannot be empty.');
+        }
+        
         this.id = invite.id;
         this.status = invite.status;
         this.user = invite.user;

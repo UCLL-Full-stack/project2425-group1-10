@@ -2,6 +2,7 @@ import { get } from 'http';
 import {Ticket} from '../model/ticket';
 import ticketDb from '../repository/ticket.db';
 import { EventInput, UserInput } from '../types';
+import { Event } from '../model/event';
 
 const getAllTickets = async (): Promise<Ticket[]> => {
     return await ticketDb.getAllTickets();
@@ -23,8 +24,19 @@ const removeUserFromTicket = async (ticketId: string) => {
     return await ticketDb.removeUserFromTicket(ticketId);
 }
 
-const createTicket = async (type: string, cost: number, event: EventInput) => {
-    return await ticketDb.createTicket(type, cost, event);
+const createTicket = async (type: string, cost: number, event: Event) => {
+
+    const eventData = new Event({
+        name: event.name,
+        description: event.description,
+        date: event.date,
+        location: event.location,
+        category: event.category,
+        backgroundImage: event.backgroundImage,
+        isTrending: event.isTrending,
+    })
+
+    return await ticketDb.createTicket(type, cost, eventData);
 }
 
 export default {
