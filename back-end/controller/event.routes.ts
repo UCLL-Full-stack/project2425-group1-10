@@ -118,7 +118,6 @@ eventRouter.get('/details/:id', async (req: Request, res: Response, next: NextFu
     }
 });
 
-<<<<<<< HEAD
 /**
  * @swagger
  * /events/{id}/{email}:
@@ -221,14 +220,7 @@ eventRouter.post("/create-event", async (req: Request, res: Response, next: Next
         res.status(200).json(newEvent);
     } catch (error) {
         next(error);
-=======
-eventRouter.post('/create', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const event = await eventService.createEvent(req.body);
-        res.status(201).json(event);
-    } catch (error) {
-        res.status(400).json({ status: 'error', message: 'Could not create event.' });
->>>>>>> origin/Development
+
     }
 });
 
