@@ -49,7 +49,8 @@ const getInvitesByUserEmail = async (email: string): Promise<Invite[]> => {
     if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
         throw new Error('Invalid email format.');
 
-    }const invites = await inviteDb.getInvitesByUserEmail(email);
+    }
+    const invites = await inviteDb.getInvitesByUserEmail(email);
 
     
 

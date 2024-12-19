@@ -83,7 +83,7 @@ test('Given: a need to see all invites, when: getAll is called, then all invites
 });
 
 //unhappy
-test('Given: no invites, When: getAll is caleld, Then: an error is thrown', async () => {
+test('Given: no invites, When: getAll is called, Then: an error is thrown', async () => {
     //Given:
     inviteDb.getAll = mockInviteDbGetAll.mockResolvedValue([]);
 
@@ -140,27 +140,23 @@ test('Given: a user already invited to the event, When: createInvite is called, 
 //getinvitesByeventid
 //happy
 test('Given: no invites for the event, When: getInvitesByEventId is called, Then: it returns an empty array', async () => {
-    const mockEventId = '123'; // Ensure eventId is a string as expected in the service
+    const mockEventId = '123';
 
-    // Mock the database call to return an empty array for the given eventId
-    mockInviteDbGetInvitesByEventId.mockResolvedValue([]); // Return an empty array when called with mockEventId
-
-    // Call the service method with the correct eventId
+    mockInviteDbGetInvitesByEventId.mockResolvedValue([]);
+    
     const result = await inviteService.getInvitesByEventId(mockEventId);
 
-    // Assertions:
-    // Ensure that the mock function was called with the correct eventId
     expect(mockInviteDbGetInvitesByEventId).toHaveBeenCalledWith(mockEventId);
-    // Ensure that the result is an empty array, as there are no invites for this event
+
     expect(result).toEqual([]);
 });
 
 //unhappy
 test('given an empty string eventId, when getInvitesByEventId is called, then an error is thrown', async () => {
     // given
-    const invalidEventId = ''; // Empty string (non-valid)
+    const invalidEventId = ''; // Empty string
 
-    // Mocking the database function (though it won't be called in this test)
+    
     mockInviteDbGetInvitesByEventId.mockResolvedValue([]);
 
     // when & then
@@ -171,7 +167,7 @@ test('Given: a wrong eventId, when getInvitesByEventId is called, then an error 
     // given
     const invalidEventId: number = 12345; // Non-string, number
 
-    // Mocking the database function (though it won't be called in this test)
+    
     mockInviteDbGetInvitesByEventId.mockResolvedValue([]);
 
     // when & then
