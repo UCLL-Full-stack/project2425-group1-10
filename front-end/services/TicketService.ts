@@ -53,9 +53,9 @@ const userBuyTicket = async (ticketId: string, email: string) => {
     if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to add participant to event');
-      }
+    }
 
-      return response.json();
+    return response.json();
 };
 
 const removeTicketFromUser = async (ticketId: string) => {

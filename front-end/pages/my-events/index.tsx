@@ -105,7 +105,6 @@ const MyEvents: React.FC = () => {
 
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import UserService from "@services/UserService";
-import TicketService from "@services/TicketService";
 export const getServerSideProps = async (context) => {
     const { locale } = context;
 

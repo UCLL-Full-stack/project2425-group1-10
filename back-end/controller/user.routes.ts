@@ -187,43 +187,6 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
     }
 })
 
-/**
- * @swagger
- * /users/{email}/favorite-events/{eventId}:
- *   put:
- *     security:
- *       - bearerAuth: []
- *     summary: Add an event to user's favorite events.
- *     description: Adds an event to the list of user's favorite events by email and event ID.
- *     tags:
- *       - Users
- *     parameters:
- *       - name: email
- *         in: path
- *         required: true
- *         description: Email of the user.
- *         schema:
- *           type: string
- *       - name: eventId
- *         in: path
- *         required: true
- *         description: ID of the event to add to favorites.
- *         schema:
- *           type: integer
- *     responses:
- *       200:
- *         description: Event added to favorites.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Event added to favorites
- *       400:
- *         description: Error occurred while adding the event to favorites.
- */
 userRouter.put('/:email/favorite-events/:eventId', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const email = req.params.email;
@@ -235,35 +198,6 @@ userRouter.put('/:email/favorite-events/:eventId', async (req: Request, res: Res
     }
 })
 
-/**
- * @swagger
- * /users/{email}/favorite-events:
- *   get:
- *     security:
- *       - bearerAuth: []
- *     summary: Get a list of user's favorite events.
- *     description: Returns JSON array of events, each item in the array is of type Event.
- *     tags:
- *       - Users
- *     parameters:
- *       - name: email
- *         in: path
- *         required: true
- *         description: Email of the user to retrieve favorite events.
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: A list of favorite events.
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Event'
- *       400:
- *         description: Error occurred while fetching the list of favorite events.
- */
 userRouter.get('/:email/favorite-events', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const email = req.params.email;

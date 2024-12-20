@@ -84,6 +84,20 @@ const createEvent = async (eventData: EventInput) => {
 };
 
 
+
+const createEvent = async (event: EventInput) => {
+  const token = JSON.parse(localStorage.getItem("loggedInUser"))?.token;
+  return await fetch(apiUrl + "/events/create-event", {
+    method: 'POST',
+    headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(event),
+  });
+}
+
+
 const EventService = {
   getAll,
   getEventById,

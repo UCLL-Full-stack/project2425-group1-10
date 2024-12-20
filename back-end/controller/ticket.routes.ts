@@ -251,39 +251,6 @@ ticketRouter.put('/:ticketId/user', async (req: Request, res: Response, next: Ne
     }
 })
 
-/**
- * @swagger
- * /tickets/create:
- *   post:
- *     security:
- *       - bearerAuth: []
- *     summary: Create a ticket.
- *     description: Returns JSON object of ticket, the item is of type Ticket.
- *     tags:
- *       - Tickets
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               type:
- *                 type: string
- *               cost:
- *                 type: number
- *               event:
- *                 type: string
- *     responses:
- *       200:
- *         description: A ticket.
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Ticket'
- *       400:
- *         description: Error occurred while creating the ticket.
- */
 ticketRouter.post('/create', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { type, cost, event } = req.body;
