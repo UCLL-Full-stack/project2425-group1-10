@@ -33,7 +33,8 @@
         "helmet": "^7.2.0",
         "jsonwebtoken": "^9.0.2",
         "swagger-jsdoc": "^6.2.0",
-        "swagger-ui-express": "^4.6.0"
+        "swagger-ui-express": "^4.6.0",
+        "swr": "^2.2.5"
     },
     "devDependencies": {
         "@types/bcrypt": "^5.0.0",
