@@ -90,16 +90,16 @@ eventRouter.get('/', async (req: Request, res: Response, next: NextFunction) => 
     }
 });
 
-eventRouter.get('/:email', async (req: Request, res: Response, next: NextFunction) => {
+// eventRouter.get('/:email', async (req: Request, res: Response, next: NextFunction) => {
 
-    try {
-        const userEmail = req.params.email;
-        const tickets = await ticketService.getTicketsByUserEmail(userEmail);
-        res.status(200).json(tickets);
-    } catch (error) {
-        res.status(400).json({ status: 'error' });
-    }
-});
+//     try {
+//         const userEmail = req.params.email;
+//         const tickets = await ticketService.getTicketsByUserEmail(userEmail);
+//         res.status(200).json(tickets);
+//     } catch (error) {
+//         res.status(400).json({ status: 'error' });
+//     }
+// });
 
 /**
  * @swagger

@@ -187,6 +187,30 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
     }
 })
 
+/**
+ * @swagger
+ * /users/{email}/favorite-events/{eventId}:
+ *   put:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Add event to favorites
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: eventId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Event added to favorites
+ */
 userRouter.put('/:email/favorite-events/:eventId', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const email = req.params.email;
@@ -198,6 +222,31 @@ userRouter.put('/:email/favorite-events/:eventId', async (req: Request, res: Res
     }
 })
 
+/**
+ * @swagger
+ * /users/{email}/favorite-events:
+ *   get:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Get favorite events by user email.
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A list of favorite events.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Event'
+ */
 userRouter.get('/:email/favorite-events', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const email = req.params.email;

@@ -251,6 +251,29 @@ ticketRouter.put('/:ticketId/user', async (req: Request, res: Response, next: Ne
     }
 })
 
+/**
+ * @swagger
+ * /tickets/create:
+ *   post:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Create a new ticket.
+ *     tags:
+ *       - Tickets
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/TicketInput'
+ *     responses:
+ *       200:
+ *         description: The newly created ticket.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Ticket'
+ */
 ticketRouter.post('/create', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { type, cost, event } = req.body;

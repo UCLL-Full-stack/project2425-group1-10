@@ -10,6 +10,7 @@ import { log } from "console";
 import TicketOverview from "@components/tickets/TicketOverview";
 import { get } from "http";
 import InviteService from "@services/InviteService";
+import TicketService from "@services/TicketService";
 
 const MyEvents: React.FC = () => {
     const router = useRouter();
